@@ -3,10 +3,20 @@ package co.coldflow.depot_music;
 public class Account {
     private String name;
     private int age;
+    private String nickName;
 
-    public Account(String name, int age) {
+    public Account(String name, int age, String nickName) {
         this.name = name;
         this.age = age;
+        this.nickName = nickName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getName() {
