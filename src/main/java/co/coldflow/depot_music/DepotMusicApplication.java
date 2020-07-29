@@ -9,5 +9,4 @@ public class DepotMusicApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DepotMusicApplication.class, args);
 	}
-	//TEST
 }
