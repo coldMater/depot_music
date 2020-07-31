@@ -17,5 +17,4 @@ public class InstructorController {
         return "instructor/instructor_form";
     }
 
-
 }
