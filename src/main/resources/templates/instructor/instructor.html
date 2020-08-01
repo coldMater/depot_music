@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap4   -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <!-- Font  -->
+    <link th:href="@{/styles/font.css}" rel="stylesheet" />
+
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/439ca6c22d.js" crossorigin="anonymous"></script>
+
+    <title>강사정보</title>
+</head>
+<body>
+    <header class="navbar navbar-dark bg-primary shadow-sm text-white mb-2">
+        <button class="btn btn-outline-light btn-sm">
+            <i class="fas fa-home"></i>
+        </button>
+
+        <h3 class="justify-content-center">Depot Music</h3>
+
+        <button class="btn btn-outline-light btn-sm justify-content-end">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+    <div class="container">
+        <h4>강사정보</h4>
+        <form th:action="@{/instructors}" method="post" enctype="multipart/form-data" th:object="${instructorResponseDto}" >
+            <div class="form-group">
+                <label for="instructor_nick_name"> 프로필 닉네임 </label>
+                <input type="text" id="instructor_nick_name" class="form-control " name="nickName" readonly th:value="*{nickName}">
+            </div>
+            <div class="form-group">
+                <label for="instructor_name"> 본명 </label>
+                <input type="text" id="instructor_name" class="form-control" name="realName" readonly th:value="*{realName}">
+            </div>
+            <div class="form-group">
+                <label for="instructor_tel"> 전화번호 </label>
+                <input type="tel" id="instructor_tel" class="form-control" name="tel" readonly th:value="*{tel}">
+            </div>
+            <div class="form-group">
+                <label for="instructor_memo"> 메모</label>
+                <textarea id="instructor_memo" class="form-control" style="resize: none;" rows="3" name="memo" readonly th:text="*{memo}"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="instructor_profile_info"> 프로필 정보 </label>
+                <textarea id="instructor_profile_info" class="form-control" style="resize: none;" rows="3" name="profileInfo" readonly th:text="*{profileInfo}"></textarea>
+            </div>
+            <div class="form-group">
+                <label> 프로필 이미지 </label>
+                <div style="max-width: 600px;">
+                    <img src="https://lh3.googleusercontent.com/proxy/eEK7_aT00ptgyTuSPfXvpv34UEl3FpZgOW7JjEHT2wKh3WYK3iE9dQWqYLI_P-_a6BH7q4vw-eO-s2ODuzQpfWH-NCkImBVa2l5MJoLiVjY4CgG8_A" class="rounded mx-auto d-block img-fluid" alt="강사 사진"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="instructor_username"> 계정 ID </label>
+                <input type="text" id="instructor_username" class="form-control" name="username" readonly th:value="*{username}">
+            </div>
+        </form>
+
+        <div class="d-flex">
+            <a th:href="@{/instructors}" class="btn btn-danger text-white"><i class="fas fa-pencil-alt"></i> 수정</a>
+            <a th:href="@{/instructors}" class="btn btn-secondary ml-auto"><i class="fas fa-bars"></i> 목록</a>
+        </div>
+    </div>
+</body>
+</html>

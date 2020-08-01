@@ -3,7 +3,7 @@ package co.coldflow.depot_music.web.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class InstructorDto {
+public class InstructorRequestDto {
         private String nickName;
         private String realName;
         private String tel;
@@ -13,7 +13,7 @@ public class InstructorDto {
         private String password;
         private MultipartFile portrait;
 
-        public InstructorDto(String nickName, String realName, String tel, String memo, String profileInfo, String username, String password) {
+        public InstructorRequestDto(String nickName, String realName, String tel, String memo, String profileInfo, String username, String password) {
                 this.nickName = nickName;
                 this.realName = realName;
                 this.tel = tel;
