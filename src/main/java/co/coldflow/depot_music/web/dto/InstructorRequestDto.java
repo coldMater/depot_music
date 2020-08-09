@@ -3,6 +3,8 @@ package co.coldflow.depot_music.web.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Objects;
+
 public class InstructorRequestDto {
         private String nickName;
         private String realName;
@@ -89,7 +91,7 @@ public class InstructorRequestDto {
 
         @Override
         public String toString() {
-                return "InstructorDto{" +
+                return "InstructorRequestDto{" +
                         "nickName='" + nickName + '\'' +
                         ", realName='" + realName + '\'' +
                         ", tel='" + tel + '\'' +
@@ -97,7 +99,20 @@ public class InstructorRequestDto {
                         ", profileInfo='" + profileInfo + '\'' +
                         ", username='" + username + '\'' +
                         ", password='" + password + '\'' +
-                        ", portrait='" + portrait.getOriginalFilename() + '\'' +
+                        ", portrait=" + portrait.getOriginalFilename() +
                         '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+                if (this == o) return true;
+                if (o == null || getClass() != o.getClass()) return false;
+                InstructorRequestDto that = (InstructorRequestDto) o;
+                return Objects.equals(nickName, that.nickName);
+        }
+
+        @Override
+        public int hashCode() {
+                return Objects.hash(nickName);
         }
 }
