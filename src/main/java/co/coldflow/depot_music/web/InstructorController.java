@@ -14,7 +14,8 @@ public class InstructorController {
     InstructorService instructorService;
 
     @GetMapping("/instructors")
-    public String getInstructors() {
+    public String getInstructors(Model model) {
+        model.addAttribute("instructors", instructorService.selectInstructorList());
         return "instructor/instructors";
     }
 
@@ -29,7 +30,6 @@ public class InstructorController {
 
     @PostMapping("/instructors")
     public String postInstructor(InstructorRequestDto instructorRequestDto) {
-//        System.out.println(instructorDto);
         Long id = instructorService.insertInstructor(instructorRequestDto);
         return "redirect:/instructors/"+id;
     }
@@ -37,5 +37,20 @@ public class InstructorController {
     @GetMapping("/instructors/new")
     public String getInstructorForm() {
         return "instructor/instructor_form";
+    }
+
+    @GetMapping("/instructors/{id}/edit")
+    public String getInstructorForm(@PathVariable long id, Model model) {
+        InstructorResponseDto instructorResponseDto = instructorService.selectInstructor(id);
+
+        model.addAttribute(instructorResponseDto);
+
+        return "instructor/instructor_form_update";
+    }
+
+    @PostMapping("/instructors/{id}/edit")
+    public String getInstructorForm(@PathVariable long id, InstructorRequestDto instructorRequestDto) {
+        instructorService.updateInstructor(id, instructorRequestDto);
+        return "redirect:/instructors/" + id;
     }
 }

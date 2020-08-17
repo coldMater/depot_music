@@ -15,7 +15,7 @@
     <!-- fontawesome -->
     <script src="https://kit.fontawesome.com/439ca6c22d.js" crossorigin="anonymous"></script>
 
-    <title>강사정보</title>
+    <title>강사등록</title>
 </head>
 <body>
     <header class="navbar navbar-dark bg-primary shadow-sm text-white mb-2">
@@ -30,45 +30,44 @@
         </button>
     </header>
     <div class="container" th:object="${instructorResponseDto}">
-        <h4>강사정보</h4>
-        <form th:action="@{/instructors}" method="post" enctype="multipart/form-data">
+        <h4>강사등록</h4>
+        <form th:action="@{/instructors/__${instructorResponseDto.id}__/edit}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="instructor_nick_name"> 프로필 닉네임 </label>
-                <input type="text" id="instructor_nick_name" class="form-control " name="nickName" readonly th:value="*{nickName}">
+                <input type="text" id="instructor_nick_name" class="form-control" name="nickName" th:value="*{nickName}">
             </div>
             <div class="form-group">
                 <label for="instructor_name"> 본명 </label>
-                <input type="text" id="instructor_name" class="form-control" name="realName" readonly th:value="*{realName}">
+                <input type="text" id="instructor_name" class="form-control" name="realName" th:value="*{realName}">
             </div>
             <div class="form-group">
                 <label for="instructor_tel"> 전화번호 </label>
-                <input type="tel" id="instructor_tel" class="form-control" name="tel" readonly th:value="*{tel}">
+                <input type="tel" id="instructor_tel" class="form-control" name="tel" th:value="*{tel}">
             </div>
             <div class="form-group">
                 <label for="instructor_memo"> 메모</label>
-                <textarea id="instructor_memo" class="form-control" style="resize: none;" rows="3" name="memo" readonly th:text="*{memo}"></textarea>
+                <textarea id="instructor_memo" class="form-control" style="resize: none;" rows="3" name="memo" th:value="*{memo}"></textarea>
             </div>
             <div class="form-group">
                 <label for="instructor_profile_info"> 프로필 정보 </label>
-                <textarea id="instructor_profile_info" class="form-control" style="resize: none;" rows="3" name="profileInfo" readonly th:text="*{profileInfo}"></textarea>
+                <textarea id="instructor_profile_info" class="form-control" style="resize: none;" rows="3" name="profileInfo" th:value="*{profileInfo}"></textarea>
             </div>
             <div class="form-group">
-                <label> 프로필 이미지 </label>
-                <div style="max-width: 600px;">
-                    <img src="https://lh3.googleusercontent.com/proxy/eEK7_aT00ptgyTuSPfXvpv34UEl3FpZgOW7JjEHT2wKh3WYK3iE9dQWqYLI_P-_a6BH7q4vw-eO-s2ODuzQpfWH-NCkImBVa2l5MJoLiVjY4CgG8_A" class="rounded mx-auto d-block img-fluid" alt="강사 사진"/>
-                </div>
+                <label for="instructor_portrait"> 프로필 이미지 </label>
+                <input type="file" id="instructor_portrait" class="form-control-file" name="portrait">
             </div>
 
             <div class="form-group">
                 <label for="instructor_username"> 계정 ID </label>
                 <input type="text" id="instructor_username" class="form-control" name="username" readonly th:value="*{username}">
             </div>
-        </form>
 
-        <div class="d-flex mb-5">
-            <a th:href="@{/instructors/__${instructorResponseDto.id}__/edit}" class="btn btn-danger text-white"><i class="fas fa-pencil-alt"></i> 수정</a>
-            <a th:href="@{/instructors}" class="btn btn-secondary ml-auto"><i class="fas fa-bars"></i> 목록</a>
-        </div>
+            <hr>
+            <div class="my-4">
+                <input type="submit" class="btn btn-primary btn-block" value="수정">
+            </div>
+
+        </form>
     </div>
 </body>
 </html>

@@ -5,6 +5,7 @@ import co.coldflow.depot_music.entity.Instructor;
 import org.springframework.web.multipart.MultipartFile;
 
 public class InstructorResponseDto {
+        private Long id;
         private String nickName;
         private String realName;
         private String tel;
@@ -15,6 +16,7 @@ public class InstructorResponseDto {
         private String fileUrl;
 
         public InstructorResponseDto(Instructor instructor) {
+                this.id = instructor.getId();
                 this.nickName = instructor.getNickName();
                 this.realName = instructor.getRealName();
                 this.tel = instructor.getTel();
@@ -27,6 +29,7 @@ public class InstructorResponseDto {
         @Override
         public String toString() {
                 return "InstructorResponseDto{" +
+                        "id='" + id + '\'' +
                         "nickName='" + nickName + '\'' +
                         ", realName='" + realName + '\'' +
                         ", tel='" + tel + '\'' +
@@ -36,6 +39,14 @@ public class InstructorResponseDto {
                         ", portraitFileName='" + portraitFileName + '\'' +
                         ", fileUrl='" + fileUrl + '\'' +
                         '}';
+        }
+
+        public Long getId() {
+                return id;
+        }
+
+        public void setId(Long id) {
+                this.id = id;
         }
 
         public String getNickName() {
