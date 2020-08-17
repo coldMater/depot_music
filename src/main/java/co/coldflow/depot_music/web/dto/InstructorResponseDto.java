@@ -23,14 +23,14 @@ public class InstructorResponseDto {
                 this.memo = instructor.getMemo();
                 this.profileInfo = instructor.getProfileInfo();
                 this.username = instructor.getUsername();
-                this.portraitFileName = instructor.getPortraitFileName();
+                this.portraitFileName = instructor.getFileName ();
         }
 
         @Override
         public String toString() {
                 return "InstructorResponseDto{" +
                         "id='" + id + '\'' +
-                        "nickName='" + nickName + '\'' +
+                        ", nickName='" + nickName + '\'' +
                         ", realName='" + realName + '\'' +
                         ", tel='" + tel + '\'' +
                         ", memo='" + memo + '\'' +

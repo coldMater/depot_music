@@ -46,15 +46,16 @@
                 >
                     <th th:text="${instructor.id}"></th>
                     <th>
-                        <a
-                                th:href="@{/instructors/__${instructor.id}__}"
-                                th:text="${instructor.username}"></a>
+                        <a th:href="@{/instructors/__${instructor.id}__}" th:text="${instructor.username}"></a>
                     </th>
                     <th th:text="${instructor.username}"></th>
                     <th th:text="${instructor.tel}"></th>
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="d-flex mb-5">
+            <a th:href="@{/instructors/new}" class="btn btn-primary ml-auto">신규</a>
         </div>
     </div>
 

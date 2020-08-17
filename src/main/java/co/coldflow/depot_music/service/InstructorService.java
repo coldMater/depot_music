@@ -12,13 +12,15 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.nio.file.Path;
+
 @Service
 @Transactional
 public class InstructorService {
     @Autowired
     InstructorRepository instructorRepository;
 
-    public Long insertInstructor(InstructorRequestDto instructorRequestDto) {
+    public Long insertInstructor(InstructorRequestDto instructorRequestDto, Path filePath) {
         Instructor instructorToBeSaved = new Instructor();
 
         instructorToBeSaved.setNickName(instructorRequestDto.getNickName());
@@ -28,7 +30,8 @@ public class InstructorService {
         instructorToBeSaved.setProfileInfo(instructorRequestDto.getProfileInfo());
         instructorToBeSaved.setUsername(instructorRequestDto.getUsername());
         instructorToBeSaved.setPassword(instructorRequestDto.getPassword());
-        instructorToBeSaved.setPortraitFileName(instructorRequestDto.getPortrait().getOriginalFilename());
+        instructorToBeSaved.setFileName(instructorRequestDto.getPortrait().getOriginalFilename());
+        instructorToBeSaved.setFilePath(filePath.toString());
 
         Instructor instructorSaved = instructorRepository.save(instructorToBeSaved);
 
@@ -54,12 +57,18 @@ public class InstructorService {
 
     public void updateInstructor(Long id, InstructorRequestDto instructorRequestDto) {
         Instructor instructorToBeEdited = instructorRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id="+id));
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
 
         instructorToBeEdited.setNickName(instructorRequestDto.getNickName());
         instructorToBeEdited.setRealName(instructorRequestDto.getRealName());
         instructorToBeEdited.setTel(instructorRequestDto.getTel());
         instructorToBeEdited.setMemo(instructorRequestDto.getMemo());
         instructorToBeEdited.setProfileInfo(instructorRequestDto.getProfileInfo());
+    }
+
+    public String getImagePath(long id) {
+        Instructor instructor = instructorRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id="+id));
+        return instructor.getFilePath();
     }
 }

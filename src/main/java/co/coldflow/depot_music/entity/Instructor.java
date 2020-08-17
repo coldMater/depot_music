@@ -15,7 +15,24 @@ public class Instructor extends BaseEntity {
     private String profileInfo;
     private String username;
     private String password;
-    private String portraitFileName;
+    private String fileName;
+    private String filePath;
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 
     public String getNickName() {
         return nickName;
@@ -73,11 +90,4 @@ public class Instructor extends BaseEntity {
         this.password = password;
     }
 
-    public String getPortraitFileName() {
-        return portraitFileName;
-    }
-
-    public void setPortraitFileName(String portraitFileName) {
-        this.portraitFileName = portraitFileName;
-    }
 }
