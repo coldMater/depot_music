@@ -18,17 +18,7 @@
     <title>강사등록</title>
 </head>
 <body>
-    <header class="navbar navbar-dark bg-primary shadow-sm text-white mb-2">
-        <button class="btn btn-outline-light btn-sm">
-            <i class="fas fa-home"></i>
-        </button>
-
-        <h3 class="justify-content-center">Depot Music</h3>
-
-        <button class="btn btn-outline-light btn-sm justify-content-end">
-            <i class="fas fa-bars"></i>
-        </button>
-    </header>
+    <div th:insert="~{common/nav :: menu}"></div>
     <div class="container">
         <h4>강사등록</h4>
         <form th:action="@{/instructors}" method="post" enctype="multipart/form-data">
@@ -63,7 +53,7 @@
             </div>
 
             <div class="form-group">
-                <label for="instructor_username"> 계정 PW </label>
+                <label for="instructor_password"> 계정 PW </label>
                 <div class="row">
                     <div class="col">
                         <input type="text" id="instructor_password_confirm" class="form-control" name="password">

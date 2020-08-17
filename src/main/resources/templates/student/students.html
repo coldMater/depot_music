@@ -14,39 +14,12 @@
 
     <!-- fontawesome -->
     <script src="https://kit.fontawesome.com/439ca6c22d.js" crossorigin="anonymous"></script>
-    <title>강사 목록</title>
+    <title>학생 목록</title>
 </head>
 <body>
     <div th:insert="~{common/nav :: menu}"></div>
     <div class="container">
-        <h4>강사목록</h4>
-        <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">이름</th>
-                    <th scope="col">아이디</th>
-                    <th scope="col">전화번호</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr
-                    th:each="instructor: ${instructors}"
-                >
-                    <th th:text="${instructor.id}"></th>
-                    <th>
-                        <a th:href="@{/instructors/__${instructor.id}__}" th:text="${instructor.username}"></a>
-                    </th>
-                    <th th:text="${instructor.username}"></th>
-                    <th th:text="${instructor.tel}"></th>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="d-flex mb-5">
-            <a th:href="@{/instructors/new}" class="btn btn-primary ml-auto">신규</a>
-        </div>
+        <h4>학생목록</h4>
     </div>
 
 </body>

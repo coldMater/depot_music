@@ -18,17 +18,7 @@
     <title>강사정보</title>
 </head>
 <body>
-    <header class="navbar navbar-dark bg-primary shadow-sm text-white mb-2">
-        <button class="btn btn-outline-light btn-sm">
-            <i class="fas fa-home"></i>
-        </button>
-
-        <h3 class="justify-content-center">Depot Music</h3>
-
-        <button class="btn btn-outline-light btn-sm justify-content-end">
-            <i class="fas fa-bars"></i>
-        </button>
-    </header>
+    <div th:insert="~{common/nav :: menu}"></div>
     <div class="container" th:object="${instructorResponseDto}">
         <h4>강사정보</h4>
         <form th:action="@{/instructors}" method="post" enctype="multipart/form-data">
@@ -55,7 +45,7 @@
             <div class="form-group">
                 <label> 프로필 이미지 </label>
                 <div style="max-width: 600px;">
-                    <img th:src="@{'/portrait/' + *{id}}" alt="강사 사진" class="img-fluid"/>
+                    <img th:src="@{'/portrait/' + ${instructorResponseDto.id}}" alt="강사 사진" class="img-fluid"/>
                 </div>
             </div>
 
