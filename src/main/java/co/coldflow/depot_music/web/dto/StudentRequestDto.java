@@ -2,7 +2,10 @@ package co.coldflow.depot_music.web.dto;
 
 import co.coldflow.depot_music.entity.EStudentType;
 
+import javax.validation.constraints.NotEmpty;
+
 public class StudentRequestDto {
+    @NotEmpty(message = "이름은 비어있을 수 없습니다.")
     private String name;
     private String birthDate;
     private String tel;

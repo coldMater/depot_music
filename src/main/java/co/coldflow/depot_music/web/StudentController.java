@@ -27,19 +27,23 @@ public class StudentController implements WebMvcConfigurer {
     }
 
     @GetMapping("/students")
-    public String getStudents(Model model) {
+    public String getStudents(Model model, StudentRequestDto studentRequestDto) {
         return "student/students";
     }
 
     @GetMapping("/students/new")
-    public String postStudent(Model model) { return "student/student_form";}
+    public String postStudent(Model model, StudentRequestDto studentRequestDto) { return "student/student_form";}
 
     @PostMapping("/students")
     public String postStudent(@Valid StudentRequestDto studentRequestDto, Errors errors, Model model) {
-        long id = studentService.insertStudent(studentRequestDto);
+        if (null != errors && errors.getErrorCount() > 0) {
+            return "student/student_form";
+        } else {
+            long id = studentService.insertStudent(studentRequestDto);
 
-        model.addAttribute(studentRequestDto);
-        return "redirect:/students/"+id;
+            model.addAttribute(studentRequestDto);
+            return "redirect:/students/"+id;
+        }
     }
 
     @GetMapping("students/{id}")
