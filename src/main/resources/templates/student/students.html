@@ -7,6 +7,9 @@
     <div th:insert="~{fragments/nav :: menu}"></div>
     <div class="container">
         <h4>학생목록</h4>
+        <div class="d-flex mb-5">
+            <a th:href="@{/students/new}" class="btn btn-primary ml-auto">신규</a>
+        </div>
     </div>
 </body>
 </html>

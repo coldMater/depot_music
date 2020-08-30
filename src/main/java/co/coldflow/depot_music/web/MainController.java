@@ -10,4 +10,6 @@ public class MainController {
     public String getInstructors(Model model) {
         return "main/main";
     }
+
+
 }

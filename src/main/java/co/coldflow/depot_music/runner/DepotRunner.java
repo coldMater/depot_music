@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class DepotRunner implements ApplicationRunner{
@@ -26,7 +24,7 @@ public class DepotRunner implements ApplicationRunner{
         System.out.println(connection.getMetaData().getURL());
         System.out.println(connection.getMetaData().getUserName());
 
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 30; i++){
             Instructor instructor = new Instructor();
             instructor.setUsername("test"+i);
             instructor.setRealName("test_name"+i);
