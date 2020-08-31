@@ -1,6 +1,7 @@
 package co.coldflow.depot_music.web;
 
 import co.coldflow.depot_music.service.StudentService;
+import co.coldflow.depot_music.web.dto.ParentRequestDto;
 import co.coldflow.depot_music.web.dto.StudentRequestDto;
 import co.coldflow.depot_music.web.dto.StudentResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class StudentController implements WebMvcConfigurer {
         }
     }
 
-    @GetMapping("students/{id}")
+    @GetMapping("/students/{id}")
     public String getStudent(@PathVariable long id, Model model){
         StudentResponseDto studentResponseDto = studentService.selectStudent(id);
 
@@ -54,4 +55,5 @@ public class StudentController implements WebMvcConfigurer {
 
         return "student/student";
     }
+
 }

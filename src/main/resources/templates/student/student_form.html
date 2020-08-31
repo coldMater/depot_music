@@ -10,20 +10,23 @@
         <form action="#" th:action="@{/students}" th:object="${studentRequestDto}" method="post">
             <div class="form-group">
                 <label for="student_name">이름</label>
-                <input type="text" id="student_name" class="form-control" name="name" th:field="*{name}">
+                <input required type="text" id="student_name" class="form-control" name="name" th:field="*{name}">
                 <p class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
             </div>
             <div class="form-group">
                 <label for="instructor_nick_name">생년월일</label>
-                <input type="date" id="instructor_nick_name" class="form-control" name="birthDate">
+                <input required type="date" id="instructor_nick_name" class="form-control" name="birthDate" th:field="*{birthDate}">
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}">
             </div>
             <div class="form-group">
                 <label for="student_tel">전화번호</label>
-                <input type="text" id="student_tel" class="form-control" name="tel">
+                <input required type="text" id="student_tel" class="form-control" name="tel" th:field="*{tel}">
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}">
             </div>
             <div class="form-group">
                 <label for="student_email">이메일</label>
-                <input type="text" id="student_email" class="form-control " name="email">
+                <input type="text" id="student_email" class="form-control " name="email" th:field="*{email}">
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
             </div>
             <div class="form-group">
                 <label for="student_address">주소</label>
@@ -121,26 +124,32 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <label for="parentName">이름</label>
-                        <div class="form-group">
-                            <div class="input-group mb-3">
-                                <input type="text" id="parentName" class="form-control" name="name">
+                <form id="parent_form_from_student">
+                    <div class="modal-body">
+                            <label for="parentName">이름</label>
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input required type="text" id="parentName" class="form-control" name="name">
+                                    <div id="parentNameErrorMsg" class="invalid-feedback">
+                                        Please provide a valid city.
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <label for="parentTel">전화번호</label>
-                        <div class="form-group">
-                            <div class="input-group mb-3">
-                                <input type="text" id="parentTel" class="form-control" name="tel">
+                            <label for="parentTel">전화번호</label>
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input required type="text" id="parentTel" class="form-control" name="tel">
+                                    <div id="parentTelErrorMsg" class="invalid-feedback">
+                                        Please provide a valid city.
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-primary">신규등록</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                        <button id="parent_submit_button" type="submit" class="btn btn-primary">등록</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -154,6 +163,33 @@
             }
         });
 
+        document.getElementById("parent_form_from_student").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('name', document.getElementById("parentName").value);
+            formData.append('tel', document.getElementById("parentTel").value);
+
+            const parentRequest = new XMLHttpRequest();
+            parentRequest.open("POST", "/students/parent", true);
+            parentRequest.onload = function(ev) {
+                if(parentRequest.status === 200){
+                    $('#postParentModal').modal('hide')
+                } else {
+                    const responseJSON = JSON.parse(ev.currentTarget.response);
+                    responseJSON.errors.forEach(e => {
+                        if(e.field === "name"){
+                            document.getElementById("parentName").classList.add("is-invalid");
+                            document.getElementById("parentNameErrorMsg").innerText = e.defaultMessage;
+                        }
+                        if(e.field === "tel"){
+                            document.getElementById("parentTel").classList.add("is-invalid");
+                            document.getElementById("parentTelErrorMsg").innerText = e.defaultMessage;
+                        }
+                    })
+                }
+            }
+            parentRequest.send(formData);
+        })
 
     </script>
 </body>

@@ -1,12 +1,14 @@
-package co.coldflow.depot_music.entity;
+package co.coldflow.depot_music.web.dto;
 
-import co.coldflow.depot_music.entity.Base.BaseEntity;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
-import javax.persistence.Entity;
-
-@Entity
-public class Parent extends BaseEntity {
+public class ParentRequestDto {
+    @NotEmpty
+    @NotBlank
     private String name;
+    @NotEmpty
+    @NotBlank
     private String tel;
 
     public String getName() {

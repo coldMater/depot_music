@@ -1,20 +1,33 @@
 package co.coldflow.depot_music.web.dto;
 
 import co.coldflow.depot_music.entity.EStudentType;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 
 public class StudentRequestDto {
     @NotEmpty(message = "이름은 비어있을 수 없습니다.")
     private String name;
-    private String birthDate;
+
+    @Past(message = "생년월일은 현재 날짜 이전이어야 합니다.")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate birthDate;
+
+    @NotEmpty(message = "전화번호는 비어있을 수 없습니다. '-'를 사용해주세요.")
     private String tel;
+
+    @Email
     private String email;
+
     private String address;
     private EStudentType studentType;
     private Long parentId;
 
-    public StudentRequestDto(String name, String birthDate, String tel, String email, String address, EStudentType studentType, Long parentId) {
+    public StudentRequestDto(String name, LocalDate birthDate, String tel, String email, String address, EStudentType studentType, Long parentId) {
         this.name = name;
         this.birthDate = birthDate;
         this.tel = tel;
@@ -32,11 +45,11 @@ public class StudentRequestDto {
         this.name = name;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 

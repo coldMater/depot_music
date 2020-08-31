@@ -26,7 +26,7 @@ public class StudentService {
         Student student = new Student();
 
         student.setAddress(studentRequestDto.getAddress());
-        student.setBirthDate(LocalDate.parse(studentRequestDto.getBirthDate()));
+        student.setBirthDate(studentRequestDto.getBirthDate());
         student.setEmail(studentRequestDto.getEmail());
         student.setName(studentRequestDto.getName());
         student.setStudentType(studentRequestDto.getStudentType());
