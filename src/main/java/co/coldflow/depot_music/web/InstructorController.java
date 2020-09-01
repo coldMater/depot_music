@@ -16,21 +16,17 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
 
 @Controller
 public class InstructorController {
     @Autowired
     InstructorService instructorService;
-
 
     @GetMapping("/instructors")
     public String getInstructors(Model model) {
@@ -73,7 +69,7 @@ public class InstructorController {
     }
 
     @GetMapping("/instructors/{id}/edit")
-    public String getInstructorForm(@PathVariable long id, Model model) {
+    public String getInstructorUpdateForm(@PathVariable long id, Model model) {
         InstructorResponseDto instructorResponseDto = instructorService.selectInstructor(id);
 
         model.addAttribute(instructorResponseDto);
@@ -82,7 +78,7 @@ public class InstructorController {
     }
 
     @PostMapping("/instructors/{id}/edit")
-    public String getInstructorForm(@PathVariable long id, InstructorRequestDto instructorRequestDto) {
+    public String putInstructor(@PathVariable long id, InstructorRequestDto instructorRequestDto) {
         instructorService.updateInstructor(id, instructorRequestDto);
         return "redirect:/instructors/" + id;
     }

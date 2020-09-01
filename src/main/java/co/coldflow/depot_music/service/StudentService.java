@@ -5,6 +5,7 @@ import co.coldflow.depot_music.entity.Parent;
 import co.coldflow.depot_music.entity.Student;
 import co.coldflow.depot_music.repository.ParentRepository;
 import co.coldflow.depot_music.repository.StudentRepository;
+import co.coldflow.depot_music.web.dto.ParentResponseDto;
 import co.coldflow.depot_music.web.dto.StudentRequestDto;
 import co.coldflow.depot_music.web.dto.StudentResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -49,6 +53,8 @@ public class StudentService {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("입력하신 학생의 ID가 존재하지 않습니다. id=" + id));
 
+        Parent parent = student.getParent();
+
         return new StudentResponseDto(
             student.getId(),
             student.getName(),
@@ -56,7 +62,35 @@ public class StudentService {
             student.getTel(),
             student.getEmail(),
             student.getAddress(),
-            student.getStudentType()
+            student.getStudentType(),
+            parent == null ? null : new ParentResponseDto(student.getParent().getId(), student.getParent().getName(), student.getParent().getTel())
         );
+    }
+
+    public void updateStudent(long id, StudentRequestDto studentRequestDto) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("입력하신 학생의 ID가 존재하지 않습니다. id=" + id));
+
+        Optional<Parent> parent = studentRequestDto.getParentId() != null ? parentRepository.findById(studentRequestDto.getParentId()) : Optional.empty();
+
+        student.setName(studentRequestDto.getName());
+        student.setBirthDate(studentRequestDto.getBirthDate());
+        student.setTel(studentRequestDto.getTel());
+        student.setEmail(studentRequestDto.getEmail());
+        student.setAddress(studentRequestDto.getAddress());
+        student.setStudentType(studentRequestDto.getStudentType());
+        student.setParent(parent.isPresent() ? parent.get() : null);
+    }
+
+    public List<StudentResponseDto> selectStudentList() {
+        List<Student> existingStudentList = studentRepository.findAll();
+
+        ArrayList<StudentResponseDto> studentResponseDtoArrayList = new ArrayList<>();
+
+        for(Student student: existingStudentList){
+            studentResponseDtoArrayList.add(new StudentResponseDto(student));
+        }
+
+        return studentResponseDtoArrayList;
     }
 }

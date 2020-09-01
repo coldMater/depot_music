@@ -1,9 +1,7 @@
 package co.coldflow.depot_music.web;
 
 import co.coldflow.depot_music.service.StudentService;
-import co.coldflow.depot_music.web.dto.ParentRequestDto;
-import co.coldflow.depot_music.web.dto.StudentRequestDto;
-import co.coldflow.depot_music.web.dto.StudentResponseDto;
+import co.coldflow.depot_music.web.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +27,7 @@ public class StudentController implements WebMvcConfigurer {
 
     @GetMapping("/students")
     public String getStudents(Model model, StudentRequestDto studentRequestDto) {
+        model.addAttribute("students", studentService.selectStudentList());
         return "student/students";
     }
 
@@ -56,4 +55,18 @@ public class StudentController implements WebMvcConfigurer {
         return "student/student";
     }
 
+    @GetMapping("/students/{id}/edit")
+    public String getStudentUpdateForm(@PathVariable long id, Model model) {
+        StudentResponseDto studentResponseDto = studentService.selectStudent(id);
+
+        model.addAttribute(studentResponseDto);
+
+        return "student/student_form_update";
+    }
+
+    @PostMapping("/students/{id}/edit")
+    public String putStudentForm(@PathVariable long id, StudentRequestDto studentRequestDto) {
+        studentService.updateStudent(id, studentRequestDto);
+        return "redirect:/students/" + id;
+    }
 }

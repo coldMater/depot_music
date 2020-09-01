@@ -31,17 +31,17 @@
             <div class="form-group">
                 <label for="studentType">유형</label>
                 <div class="input-group mb-3">
-                    <select id="studentType" name="studentType" class="custom-select" th:value="*{studentType}" disabled>
+                    <select id="studentType" name="studentType" class="custom-select" th:value="*{studentType}" disabled th:field="*{studentType}">
                         <option value="STUDENT">수강생</option>
                         <option value="CHILDREN">학생(자녀)</option>
                     </select>
                 </div>
             </div>
-            <div id="parentWrapper" class="d-none">
+            <div id="parentWrapper" th:class="${studentResponseDto.studentType==T(co.coldflow.depot_music.entity.EStudentType).STUDENT}?'d-none':''">
                 <label for="parent">학부모</label>
                 <div class="form-group" id="student_parent" >
                     <div class="input-group mb-3">
-                        <input type="text" id="parent" class="form-control" name="parentName" disabled readonly>
+                        <input type="text" id="parent" class="form-control" name="parentName" disabled readonly th:value="${studentResponseDto.parent!=null ? studentResponseDto.parent.name + ' (' + studentResponseDto.parent.tel + ')': ''}">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" disabled data-toggle="modal" type="button" data-target="#parentSearchModal" id="parent_search_modal_open_button">검색</button>
                         </div>

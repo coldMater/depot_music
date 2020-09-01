@@ -2,31 +2,37 @@ package co.coldflow.depot_music.web.dto.json_response;
 
 import org.springframework.validation.FieldError;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomResponse {
-    private String data;
+    private Object object;
     private List<FieldError> errors;
 
-    public CustomResponse(String data, List<FieldError> errors) {
-        this.data = data;
+    public CustomResponse(Object object, List<FieldError> errors) {
+        this.object = object;
         this.errors = errors;
     }
 
     public CustomResponse(List<FieldError> errors) {
-        this.data = null;
+        this.object = null;
         this.errors = errors;
+    }
+
+    public CustomResponse(Object object) {
+        this.object = object;
+        this.errors = new ArrayList();
     }
 
     public CustomResponse() {
     }
 
-    public String getData() {
-        return data;
+    public Object getData() {
+        return object;
     }
 
     public void setData(String data) {
-        this.data = data;
+        this.object = data;
     }
 
     public List<FieldError> getErrors() {
