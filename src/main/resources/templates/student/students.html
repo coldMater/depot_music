@@ -16,7 +16,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">이름</th>
-                    <th scope="col">생년월일</th>
+                    <th class="d-none d-sm-block" scope="col">생년월일</th>
                     <th scope="col">전화번호</th>
                 </tr>
                 </thead>
@@ -26,7 +26,7 @@
                         <th>
                             <a th:href="@{/students/__${student.id}__}" th:text="${student.name}"></a>
                         </th>
-                        <th th:text="${student.birthDate}"></th>
+                        <th class="d-none d-sm-block" th:text="${student.birthDate}"></th>
                         <th th:text="${student.tel}"></th>
                     </tr>
                 </tbody>

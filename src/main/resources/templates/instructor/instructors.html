@@ -16,7 +16,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">이름</th>
-                    <th scope="col">아이디</th>
+                    <th class="d-none d-sm-block" scope="col">아이디</th>
                     <th scope="col">전화번호</th>
                 </tr>
                 </thead>
@@ -28,7 +28,7 @@
                     <th>
                         <a th:href="@{/instructors/__${instructor.id}__}" th:text="${instructor.realName}"></a>
                     </th>
-                    <th th:text="${instructor.username}"></th>
+                    <th class="d-none d-sm-block" th:text="${instructor.username}"></th>
                     <th th:text="${instructor.tel}"></th>
                 </tr>
                 </tbody>

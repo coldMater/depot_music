@@ -28,7 +28,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">이름</th>
-                        <th scope="col">생년월일</th>
+                        <th class="d-none d-sm-block" scope="col">생년월일</th>
                         <th scope="col">전화번호</th>
                         <th scope="col">해제</th>
                     </tr>
@@ -37,7 +37,7 @@
                     <tr th:each="student: ${instructorResponseDto.students}">
                         <th th:text="${student.id}"></th>
                         <th th:text="${student.name}"></th>
-                        <th th:text="${student.birthDate}"></th>
+                        <th class="d-none d-sm-block" th:text="${student.birthDate}"></th>
                         <th th:text="${student.tel}"></th>
                         <th>
                             <a th:data-instructor-id="${instructorResponseDto.id}" th:data-student-id="${student.id}" class="text-danger release_student_button" href="#"><i class="fas fa-unlink"></i></a>

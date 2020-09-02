@@ -13,7 +13,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">이름</th>
-                    <th scope="col">전화번호</th>
+                    <th class="d-none d-sm-block" scope="col">전화번호</th>
                     <th scope="col">수강생수</th>
                     <th scope="col">매칭</th>
                 </tr>
@@ -22,10 +22,10 @@
                     <tr th:each="instructor: ${instructors}">
                         <th th:text="${instructor.id}"></th>
                         <th th:text="${instructor.realName}"></th>
-                        <th th:text="${instructor.tel}"></th>
-                        <th th:text="${instructor.students.size()}"></th>
+                        <th class="d-none d-sm-block" th:text="${instructor.tel}"></th>
+                        <th class="text-right" th:text="${instructor.students.size()}"></th>
                         <th>
-                            <a th:href="@{/connections/__${instructor.id}__}">연결</a>
+                            <a th:href="@{/connections/__${instructor.id}__}"><i class="fas fa-link"></i> 연결</a>
                         </th>
                     </tr>
                 </tbody>
