@@ -17,4 +17,12 @@ public abstract class MutableBaseEntity extends ImmutableBaseEntity {
 
     @LastModifiedDate
     private LocalDateTime modifiedDate;
+
+    public long getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
 }

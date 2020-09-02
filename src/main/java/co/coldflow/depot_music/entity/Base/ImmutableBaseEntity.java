@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -17,9 +18,17 @@ public abstract class ImmutableBaseEntity {
     private long createdBy;
 
     @CreatedDate
-    private long createdDate;
+    private LocalDateTime createdDate;
 
     public long getId() {
         return id;
+    }
+
+    public long getCreatedBy() {
+        return createdBy;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 }

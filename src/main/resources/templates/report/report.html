@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/head :: head">
+    <title id="pageTitle">수강일지 상세보기</title>
+</head>
+<body>
+    <div th:include="fragments/nav :: menu"></div>
+    <div class="container" th:object="${reportResponseDto}">
+        <h4>수강일지 상세보기</h4>
+        <form>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label col-form-label" for="instructorName"> 강사명 </label>
+                <div class="col-sm-10">
+                    <input type="text" id="instructorName" class="form-control" name="instructorName" readonly th:value="*{instructorName}">
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

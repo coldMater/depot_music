@@ -2,9 +2,11 @@ package co.coldflow.depot_music.runner;
 
 import co.coldflow.depot_music.entity.Instructor;
 import co.coldflow.depot_music.entity.Parent;
+import co.coldflow.depot_music.entity.Report;
 import co.coldflow.depot_music.entity.Student;
 import co.coldflow.depot_music.repository.InstructorRepository;
 import co.coldflow.depot_music.repository.ParentRepository;
+import co.coldflow.depot_music.repository.ReportRepository;
 import co.coldflow.depot_music.repository.StudentRepository;
 import co.coldflow.depot_music.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +32,8 @@ public class DepotRunner implements ApplicationRunner{
     ParentRepository parentRepository;
     @Autowired
     StudentRepository studentRepository;
+    @Autowired
+    ReportRepository reportRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -58,6 +63,15 @@ public class DepotRunner implements ApplicationRunner{
             student.setTel("010-0000-000"+i%10);
             student.setBirthDate(LocalDate.now().minusYears(15).minusDays(Math.round(Math.random()*365)));
             studentRepository.save(student);
+        }
+
+        for(long i = 0L; i<3L; i++){
+            Report report = new Report();
+            report.setClassTime(LocalDateTime.now().minusSeconds(Math.round((Math.random()*10000000))));
+            report.setInstructor(instructorRepository.findById(1L).get());
+            report.setStudent(studentRepository.findById(1L).get());
+            report.setProgram("test");
+            reportRepository.save(report);
         }
     }
 
