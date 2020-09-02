@@ -28,7 +28,7 @@ public class ParentService {
         return new ParentResponseDto(parent.getId(), parent.getName(), parent.getTel());
     }
 
-    public List<ParentResponseDto> selectParent(String keyword) {
+    public List<ParentResponseDto> selectParentList(String keyword) {
         List<Parent> parentList = parentRepository.findAllByNameContainsOrTelContains(keyword, keyword);
 
         List<ParentResponseDto> parentListToBeReturn = new ArrayList();

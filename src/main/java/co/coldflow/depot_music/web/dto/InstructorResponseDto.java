@@ -2,7 +2,11 @@ package co.coldflow.depot_music.web.dto;
 
 
 import co.coldflow.depot_music.entity.Instructor;
+import co.coldflow.depot_music.entity.Student;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InstructorResponseDto {
         private Long id;
@@ -14,6 +18,7 @@ public class InstructorResponseDto {
         private String username;
         private String portraitFileName;
         private String fileUrl;
+        private List<StudentResponseDto> students = new ArrayList<>();
 
         public InstructorResponseDto(Instructor instructor) {
                 this.id = instructor.getId();
@@ -24,6 +29,10 @@ public class InstructorResponseDto {
                 this.profileInfo = instructor.getProfileInfo();
                 this.username = instructor.getUsername();
                 this.portraitFileName = instructor.getFileName ();
+
+                for(Student s : instructor.getStudents()){
+                    students.add(new StudentResponseDto(s));
+                }
         }
 
         @Override
@@ -111,5 +120,13 @@ public class InstructorResponseDto {
 
         public void setFileUrl(String fileUrl) {
                 this.fileUrl = fileUrl;
+        }
+
+        public List<StudentResponseDto> getStudents() {
+                return students;
+        }
+
+        public void setStudents(List<StudentResponseDto> students) {
+                this.students = students;
         }
 }

@@ -1,10 +1,12 @@
 package co.coldflow.depot_music.entity;
 
 import co.coldflow.depot_music.entity.Base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Instructor extends BaseEntity {
@@ -17,6 +19,14 @@ public class Instructor extends BaseEntity {
     private String password;
     private String fileName;
     private String filePath;
+
+    @ManyToMany
+    @JoinTable(
+            name = "lesson",
+            joinColumns = @JoinColumn(name="student_id"),
+            inverseJoinColumns = @JoinColumn(name="instructor_id")
+    )
+    private List<Student> students = new ArrayList<>();
 
     public String getFileName() {
         return fileName;
@@ -90,4 +100,11 @@ public class Instructor extends BaseEntity {
         this.password = password;
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
 }

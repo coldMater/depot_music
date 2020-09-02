@@ -93,4 +93,16 @@ public class StudentService {
 
         return studentResponseDtoArrayList;
     }
+
+    public List<StudentResponseDto> selectStudentListByKeyword(String keyword) {
+        List<Student> existingStudentList = studentRepository.findAllByNameContains(keyword);
+
+        ArrayList<StudentResponseDto> studentResponseDtoArrayList = new ArrayList<>();
+
+        for(Student student: existingStudentList){
+            studentResponseDtoArrayList.add(new StudentResponseDto(student));
+        }
+
+        return studentResponseDtoArrayList;
+    }
 }

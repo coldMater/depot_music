@@ -1,7 +1,9 @@
 package co.coldflow.depot_music.service;
 
 import co.coldflow.depot_music.entity.Instructor;
+import co.coldflow.depot_music.entity.Student;
 import co.coldflow.depot_music.repository.InstructorRepository;
+import co.coldflow.depot_music.repository.StudentRepository;
 import co.coldflow.depot_music.web.dto.InstructorRequestDto;
 import co.coldflow.depot_music.web.dto.InstructorResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ import java.nio.file.Path;
 public class InstructorService {
     @Autowired
     InstructorRepository instructorRepository;
+
+    @Autowired
+    StudentRepository studentRepository;
 
     public Long insertInstructor(InstructorRequestDto instructorRequestDto, Path filePath) {
         Instructor instructorToBeSaved = new Instructor();
@@ -70,5 +75,31 @@ public class InstructorService {
         Instructor instructor = instructorRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id="+id));
         return instructor.getFilePath();
+    }
+
+    public void linkStudent(long instructorId, long studentId) {
+        Instructor instructor = instructorRepository.findById(instructorId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id="+instructorId));
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 ID 를 가진 수강생이 존재하지 않습니다. id="+studentId));
+
+        for(Student s : instructor.getStudents()){
+            if(s.equals(student)){
+                throw new IllegalArgumentException("선택한 수강생은 해당 강사에게 이미 등록되어있습니다.");
+            }
+        }
+
+        instructor.getStudents().add(student);
+    }
+
+    public void unlinkStudent(long instructorId, long studentId) {
+        Instructor instructor = instructorRepository.findById(instructorId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id="+instructorId));
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 ID 를 가진 수강생이 존재하지 않습니다. id="+studentId));
+
+        instructor.getStudents().remove(student);
     }
 }
