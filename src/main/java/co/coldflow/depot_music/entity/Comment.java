@@ -36,4 +36,8 @@ public class Comment extends BaseEntity {
     public Report getReport() {
         return report;
     }
+
+    public void setReport(Report report) {
+        this.report = report;
+    }
 }

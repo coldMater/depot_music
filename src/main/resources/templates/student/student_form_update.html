@@ -35,13 +35,13 @@
             <div class="form-group">
                 <label for="studentType">유형</label>
                 <div class="input-group mb-3">
-                    <select id="studentType" name="studentType" class="custom-select" value="STUDENT" required th:field="*{studentType}">
-                        <option value="STUDENT">수강생</option>
+                    <select id="studentType" name="studentType" class="custom-select" value="ADULT" required th:field="*{studentType}">
+                        <option value="ADULT">수강생</option>
                         <option value="CHILDREN">학생(자녀)</option>
                     </select>
                 </div>
             </div>
-            <div id="parentWrapper" th:class="${studentResponseDto.studentType==T(co.coldflow.depot_music.entity.EStudentType).STUDENT}?'d-none':''">
+            <div id="parentWrapper" th:class="${studentResponseDto.studentType==T(co.coldflow.depot_music.entity.EStudentType).ADULT}?'d-none':''">
                 <label for="parentNameInput">학부모</label>
                 <div class="form-group" id="student_parent" >
                     <div class="input-group mb-3">
@@ -147,7 +147,7 @@
     <script>
         /* 수강생 유형에 따라 "학부모" 셀렉트 토글 */
         document.getElementById("studentType").addEventListener("change", (e) => {
-            if(e.target.value === "STUDENT"){
+            if(e.target.value === "ADULT"){
                 document.getElementById("parentWrapper").classList.add("d-none")
             } else {
                 document.getElementById("parentWrapper").classList.remove("d-none")
@@ -224,7 +224,7 @@
                         tbody.appendChild(tr);
                     })
                 } else {
-                    console.error(responseJSON);
+                    console.error(responseJSON.errors);
                 }
             }
             parentRequest.send();

@@ -3,18 +3,178 @@
 <head th:include="fragments/head :: head">
     <title id="pageTitle">수강일지 상세보기</title>
 </head>
-<body>
-    <div th:include="fragments/nav :: menu"></div>
-    <div class="container" th:object="${reportResponseDto}">
-        <h4>수강일지 상세보기</h4>
-        <form>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label col-form-label" for="instructorName"> 강사명 </label>
-                <div class="col-sm-10">
-                    <input type="text" id="instructorName" class="form-control" name="instructorName" readonly th:value="*{instructorName}">
+    <body>
+        <div th:include="fragments/nav :: menu"></div>
+        <div class="container" th:object="${reportResponseDto}">
+            <h4>수강일지 상세보기</h4>
+            <form>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label col-form-label" for="instructorName"> 강사 </label>
+                    <div class="col-9">
+                        <input type="text" id="instructorName" class="form-control" name="instructorName" readonly th:value="*{instructorName}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label col-form-label" for="studentName"> 수강생 </label>
+                    <div class="col-9">
+                        <input type="text" id="studentName" class="form-control" name="studentName" readonly th:value="*{studentName}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label col-form-label" for="studentType">유형</label>
+                    <div class="input-group col-9 mb-3">
+                        <select id="studentType" name="studentType" class="custom-select" th:value="*{studentType}" disabled th:field="*{studentType}">
+                            <option value="ADULT">수강생</option>
+                            <option value="CHILDREN">학생(자녀)</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="parentWrapper" th:class="${reportResponseDto.studentType==T(co.coldflow.depot_music.entity.EStudentType).ADULT}?'d-none':''">
+                    <div class="form-group row ">
+                        <label class="col-3 col-form-label col-form-label" for="parentName"> 학부모 </label>
+                        <div class="col-9">
+                            <input type="text" id="parentName" class="form-control" name="parentName" readonly th:value="*{parentName}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label col-form-label" for="classDate"> 일시 </label>
+                    <div class="col-9">
+                        <input type="date" id="classDate" class="form-control" name="classDate" readonly th:value="*{classDate}">
+                        <input type="time" id="classTime" class="form-control" name="classTime" readonly th:value="*{classTime}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label col-form-label" for="program"> 프로그램 </label>
+                    <div class="col-sm-10">
+                        <input type="text" id="program" class="form-control" name="program" readonly th:value="*{program}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label col-form-label" for="subject"> 주제 </label>
+                    <div class="col-sm-10">
+                        <input type="text" id="subject" class="form-control" name="subject" readonly th:value="*{subject}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label col-form-label" for="result"> 수업결과 </label>
+                    <div class="col-sm-10">
+                        <textarea id="result" class="form-control" name="result" readonly th:value="*{result}" style="resize: none;" rows="4"></textarea>
+                    </div>
+                </div>
+            </form>
+
+            <hr class="my-3"/>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <div class="d-flex justify-content-between">
+                                <div> 댓글 </div>
+                                <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#writeCommentModal" data-whatever="@mdo"><i class="fas fa-pencil-alt"></i></button>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="comment: ${reportResponseDto.comments}">
+                        <td>
+                            <div class="d-flex justify-content-between align-items-baseline mb-1">
+                                <div class="d-flex align-items-baseline">
+                                    <div class=" font-weight-bold" th:text="${comment.authorName}"></div>
+                                    <div style="font-size: 0.7rem;" class="font-weight-bold" th:text="${'  No.'+comment.id}"></div>
+                                </div>
+                                <div class="text-secondary" style="font-size: 0.8rem;" th:text="${comment.createdDate+' '+comment.createdTime}"></div>
+                            </div>
+                            <div th:text="${comment.content}"></div>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-outline-danger delete-comment-button btn-sm " th:data-comment-id="${comment.id}" data-toggle="modal" data-target="#confirmDeleteCommentModal"><i class="far fa-trash-alt"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal fade" id="writeCommentModal" tabindex="-1" role="dialog" aria-labelledby="writeCommentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="writeCommentModalLabel">댓글 작성</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="commentAuthorName" class="col-form-label">작성자</label>
+                                <input type="text" class="form-control" id="commentAuthorName">
+                            </div>
+                            <div class="form-group">
+                                <label for="commentContent" class="col-form-label">댓글내용</label>
+                                <textarea class="form-control" id="commentContent"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary" id="write-comment-button">등록</button>
+                    </div>
                 </div>
             </div>
-        </form>
-    </div>
-</body>
+        </div>
+
+        <!-- 댓글 삭제 확인 모달 -->
+        <div class="modal fade" id="confirmDeleteCommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDelete">댓글 삭제</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        댓글을 삭제합니다.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-danger" id="delete-comment-button">삭제</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const deleteButtons = document.getElementsByClassName("delete-comment-button");
+            let commentIdToBeDelete = -1;
+            for(let button of deleteButtons){
+                button.addEventListener("click", (e) => {
+                    const commentId = button.dataset.commentId;
+                    commentIdToBeDelete = commentId;
+                })
+            }
+
+            document.getElementById("delete-comment-button").addEventListener('click', (e) => {
+                const deleteCommentRequest = new XMLHttpRequest();
+                deleteCommentRequest.open("DELETE", "/comments/"+commentIdToBeDelete, true);
+                deleteCommentRequest.onload = function(ev) {
+                    const responseJSON = JSON.parse(ev.currentTarget.response);
+                    if(deleteCommentRequest.status === 200){
+                        history.go(0);
+                    } else {
+                        console.error(responseJSON.errors);
+                    }
+                }
+                deleteCommentRequest.send();
+            })
+
+            document.getElementById("write-comment-button").addEventListener('click', (e) => {
+                const reportId = [[ ${reportResponseDto.id} ]];
+                console.log(reportId);
+                //    TODO
+            })
+        </script>
+    </body>
 </html>

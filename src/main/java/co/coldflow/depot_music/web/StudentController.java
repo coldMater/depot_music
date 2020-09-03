@@ -2,21 +2,22 @@ package co.coldflow.depot_music.web;
 
 import co.coldflow.depot_music.service.StudentService;
 import co.coldflow.depot_music.web.dto.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import javax.validation.Valid;
 
 
 @Controller
 public class StudentController implements WebMvcConfigurer {
-    @Autowired
-    StudentService studentService;
+    private final StudentService studentService;
+
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {

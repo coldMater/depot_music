@@ -14,8 +14,11 @@ import java.util.List;
 @Service
 @Transactional
 public class ParentService {
-    @Autowired
-    ParentRepository parentRepository;
+    private final ParentRepository parentRepository;
+
+    public ParentService(ParentRepository parentRepository) {
+        this.parentRepository = parentRepository;
+    }
 
     public ParentResponseDto insertParent(ParentRequestDto parentRequestDto){
         Parent parent = new Parent();

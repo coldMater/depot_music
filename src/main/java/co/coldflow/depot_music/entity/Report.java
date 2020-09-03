@@ -4,6 +4,7 @@ import co.coldflow.depot_music.entity.Base.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,12 +27,8 @@ public class Report extends BaseEntity {
     @JoinColumn(name="student_id")
     private Student student;
 
-    @ManyToOne
-    @JoinColumn(name="parent_id")
-    private Parent parent;
-
     @OneToMany(mappedBy = "report")
-    private List<Comment> comment;
+    private List<Comment> comment = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -103,14 +100,6 @@ public class Report extends BaseEntity {
 
     public void setStudent(Student student) {
         this.student = student;
-    }
-
-    public Parent getParent() {
-        return parent;
-    }
-
-    public void setParent(Parent parent) {
-        this.parent = parent;
     }
 
     public List<Comment> getComment() {

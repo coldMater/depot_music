@@ -14,7 +14,8 @@ public class Student extends BaseEntity {
     private String address;
 
     @Enumerated(EnumType.STRING)
-    private EStudentType studentType;
+    @Column(nullable = false)
+    private EStudentType studentType = EStudentType.ADULT;
 
     @ManyToOne
     @JoinColumn(name="parent")

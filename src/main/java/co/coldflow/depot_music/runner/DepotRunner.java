@@ -1,13 +1,7 @@
 package co.coldflow.depot_music.runner;
 
-import co.coldflow.depot_music.entity.Instructor;
-import co.coldflow.depot_music.entity.Parent;
-import co.coldflow.depot_music.entity.Report;
-import co.coldflow.depot_music.entity.Student;
-import co.coldflow.depot_music.repository.InstructorRepository;
-import co.coldflow.depot_music.repository.ParentRepository;
-import co.coldflow.depot_music.repository.ReportRepository;
-import co.coldflow.depot_music.repository.StudentRepository;
+import co.coldflow.depot_music.entity.*;
+import co.coldflow.depot_music.repository.*;
 import co.coldflow.depot_music.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -15,6 +9,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
+@Transactional
 public class DepotRunner implements ApplicationRunner{
     @Autowired
     DataSource dataSource;
@@ -34,15 +30,22 @@ public class DepotRunner implements ApplicationRunner{
     StudentRepository studentRepository;
     @Autowired
     ReportRepository reportRepository;
+    @Autowired
+    CommentRepository commentRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        final long PARENT_NUMBER = 5L;
+        final long STUDENT_NUMBER = 7L;
+        final long INSTRUCTOR_NUMBER = 3L;
+        final long REPORT_NUMBER = 10L;
+
         Connection connection = dataSource.getConnection();
 
         System.out.println(connection.getMetaData().getURL());
         System.out.println(connection.getMetaData().getUserName());
 
-        for(int i = 0; i < 30; i++){
+        for(int i = 0; i < INSTRUCTOR_NUMBER; i++){
             Instructor instructor = new Instructor();
             instructor.setUsername("text_id_"+i);
             instructor.setRealName(randomHangulName());
@@ -50,27 +53,48 @@ public class DepotRunner implements ApplicationRunner{
             instructorRepository.save(instructor);
         }
 
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < PARENT_NUMBER; i++){
             Parent parent = new Parent();
             parent.setName(randomHangulName());
             parent.setTel("010-1234-123"+i%10);
             parentRepository.save(parent);
         }
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < STUDENT_NUMBER; i++){
             Student student = new Student();
             student.setName(randomHangulName());
             student.setTel("010-0000-000"+i%10);
             student.setBirthDate(LocalDate.now().minusYears(15).minusDays(Math.round(Math.random()*365)));
+            student.setStudentType(Math.random()>0.5?EStudentType.ADULT:EStudentType.CHILDREN);
+            if(student.getStudentType() == EStudentType.CHILDREN) {
+                Parent parent = parentRepository.findById(Math.round(Math.ceil(Math.random()*PARENT_NUMBER))).get();
+                student.setParent(parent);
+            }
+            Instructor instructor = instructorRepository.findById(Math.round(Math.ceil(Math.random()*INSTRUCTOR_NUMBER))).get();
+            instructor.getStudents().add(student);
+
             studentRepository.save(student);
         }
 
-        for(long i = 0L; i<3L; i++){
+        for(long i = 0L; i<REPORT_NUMBER; i++){
             Report report = new Report();
             report.setClassTime(LocalDateTime.now().minusSeconds(Math.round((Math.random()*10000000))));
-            report.setInstructor(instructorRepository.findById(1L).get());
-            report.setStudent(studentRepository.findById(1L).get());
-            report.setProgram("test");
+            Instructor instructor = instructorRepository.findById(Math.round(Math.ceil(Math.random()*INSTRUCTOR_NUMBER))).get();
+            report.setInstructor(instructor);
+
+            List<Student> studentList = instructor.getStudents();
+            if(studentList.size() != 0){
+                report.setStudent(studentList.get((int)Math.round(Math.floor(Math.random()*studentList.size()))));
+            }
+            report.setProgram("test_"+i);
+
+            for(long j = 0L; j<2L; j++){
+                Comment comment = new Comment();
+                comment.setAuthorName("댓글러"+i+"_"+j);
+                comment.setContent("댓글입니다. 댓글은 좀 길어야 제맛이죠. 선생님 제 말을 듣고 계신가요? 듣고 계신다면 연락 바랍니다. 감사합니다. 그럼 아디오스"+i+"_"+j);
+                comment.setReport(report);
+                commentRepository.save(comment);
+            }
             reportRepository.save(report);
         }
     }

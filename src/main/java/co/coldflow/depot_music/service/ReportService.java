@@ -15,8 +15,12 @@ import java.util.List;
 @Service
 @Transactional
 public class ReportService {
-    @Autowired
-    ReportRepository reportRepository;
+
+    private final ReportRepository reportRepository;
+
+    public ReportService(ReportRepository reportRepository) {
+        this.reportRepository = reportRepository;
+    }
 
     public List<ReportResponseDto> selectReportList() {
         List<Report> reportList = reportRepository.findAll();

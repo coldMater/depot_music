@@ -1,22 +1,20 @@
 package co.coldflow.depot_music.web;
 
 import co.coldflow.depot_music.service.InstructorService;
-import co.coldflow.depot_music.service.StudentService;
 import co.coldflow.depot_music.web.dto.InstructorResponseDto;
-import co.coldflow.depot_music.web.dto.StudentRequestDto;
-import co.coldflow.depot_music.web.dto.StudentResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Controller
 public class ConnectionController implements WebMvcConfigurer {
-    @Autowired
-    InstructorService instructorService;
+    private final InstructorService instructorService;
+
+    public ConnectionController(InstructorService instructorService) {
+        this.instructorService = instructorService;
+    }
 
     @GetMapping("/connections")
     public String getInstructorListForConnection(Model model) {

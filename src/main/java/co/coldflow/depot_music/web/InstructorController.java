@@ -3,8 +3,6 @@ package co.coldflow.depot_music.web;
 import co.coldflow.depot_music.service.InstructorService;
 import co.coldflow.depot_music.web.dto.InstructorRequestDto;
 import co.coldflow.depot_music.web.dto.InstructorResponseDto;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -25,8 +23,11 @@ import java.nio.file.Paths;
 
 @Controller
 public class InstructorController {
-    @Autowired
-    InstructorService instructorService;
+    private final InstructorService instructorService;
+
+    public InstructorController(InstructorService instructorService) {
+        this.instructorService = instructorService;
+    }
 
     @GetMapping("/instructors")
     public String getInstructors(Model model) {

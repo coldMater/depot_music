@@ -20,11 +20,13 @@ import java.util.Optional;
 @Service
 @Transactional
 public class StudentService {
-    @Autowired
-    StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
+    private final ParentRepository parentRepository;
 
-    @Autowired
-    ParentRepository parentRepository;
+    public StudentService(StudentRepository studentRepository, ParentRepository parentRepository) {
+        this.studentRepository = studentRepository;
+        this.parentRepository = parentRepository;
+    }
 
     public Long insertStudent(StudentRequestDto studentRequestDto){
         Student student = new Student();

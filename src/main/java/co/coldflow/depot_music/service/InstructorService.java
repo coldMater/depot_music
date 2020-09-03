@@ -19,11 +19,13 @@ import java.nio.file.Path;
 @Service
 @Transactional
 public class InstructorService {
-    @Autowired
-    InstructorRepository instructorRepository;
+    private final InstructorRepository instructorRepository;
+    private final StudentRepository studentRepository;
 
-    @Autowired
-    StudentRepository studentRepository;
+    public InstructorService(InstructorRepository instructorRepository, StudentRepository studentRepository) {
+        this.instructorRepository = instructorRepository;
+        this.studentRepository = studentRepository;
+    }
 
     public Long insertInstructor(InstructorRequestDto instructorRequestDto, Path filePath) {
         Instructor instructorToBeSaved = new Instructor();

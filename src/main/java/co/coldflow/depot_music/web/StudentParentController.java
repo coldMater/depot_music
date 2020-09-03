@@ -7,26 +7,25 @@ import co.coldflow.depot_music.web.dto.ParentRequestDto;
 import co.coldflow.depot_music.web.dto.ParentResponseDto;
 import co.coldflow.depot_music.web.dto.StudentResponseDto;
 import co.coldflow.depot_music.web.dto.json_response.CustomResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 public class StudentParentController {
-    @Autowired
-    ParentService parentService;
+    private final ParentService parentService;
+    private final StudentService studentService;
+    private final InstructorService instructorService;
 
-    @Autowired
-    StudentService studentService;
-
-    @Autowired
-    InstructorService instructorService;
+    public StudentParentController(ParentService parentService, StudentService studentService, InstructorService instructorService) {
+        this.parentService = parentService;
+        this.studentService = studentService;
+        this.instructorService = instructorService;
+    }
 
     @PostMapping("/students/parent")
     public ResponseEntity<CustomResponse> postParentFromStudentForm(@Valid ParentRequestDto parentRequestDto, Errors errors, Model model) {
