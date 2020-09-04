@@ -40,7 +40,7 @@
                 <div class="form-group row">
                     <label class="col-3 col-form-label col-form-label" for="classDate"> 일시 </label>
                     <div class="col-9">
-                        <input type="date" id="classDate" class="form-control" name="classDate" readonly th:value="*{classDate}">
+                        <input type="date" id="classDate" class="form-control mb-1" name="classDate" readonly th:value="*{classDate}">
                         <input type="time" id="classTime" class="form-control" name="classTime" readonly th:value="*{classTime}">
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                             <div class="d-flex justify-content-between align-items-baseline mb-1">
                                 <div class="d-flex align-items-baseline">
                                     <div class=" font-weight-bold" th:text="${comment.authorName}"></div>
-                                    <div style="font-size: 0.7rem;" class="font-weight-bold" th:text="${'  No.'+comment.id}"></div>
+                                    <div style="font-size: 0.7rem;" class="text-secondary font-weight-light" th:text="${'&nbsp;&nbsp;No.'+comment.id}"></div>
                                 </div>
                                 <div class="text-secondary" style="font-size: 0.8rem;" th:text="${comment.createdDate+' '+comment.createdTime}"></div>
                             </div>
@@ -171,9 +171,22 @@
             })
 
             document.getElementById("write-comment-button").addEventListener('click', (e) => {
-                const reportId = [[ ${reportResponseDto.id} ]];
-                console.log(reportId);
-                //    TODO
+                const formData = new FormData();
+                formData.append('reportId', [[ ${reportResponseDto.id} ]]);
+                formData.append('authorName', document.getElementById("commentAuthorName").value);
+                formData.append('content', document.getElementById("commentContent").value);
+
+                const writeCommentRequest = new XMLHttpRequest();
+                writeCommentRequest.open("POST", "/comments", true);
+                writeCommentRequest.onload = function(ev) {
+                    const responseJSON = JSON.parse(ev.currentTarget.response);
+                    if(writeCommentRequest.status ===200){
+                        history.go(0);
+                    } else {
+                        console.error(responseJSON.errors);
+                    }
+                }
+                writeCommentRequest.send(formData);
             })
         </script>
     </body>

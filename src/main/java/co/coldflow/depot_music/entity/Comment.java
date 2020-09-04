@@ -1,6 +1,7 @@
 package co.coldflow.depot_music.entity;
 
 import co.coldflow.depot_music.entity.Base.BaseEntity;
+import co.coldflow.depot_music.web.dto.CommentRequestDto;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -40,4 +41,5 @@ public class Comment extends BaseEntity {
     public void setReport(Report report) {
         this.report = report;
     }
+
 }
