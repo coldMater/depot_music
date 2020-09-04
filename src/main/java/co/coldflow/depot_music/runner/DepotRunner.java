@@ -2,7 +2,7 @@ package co.coldflow.depot_music.runner;
 
 import co.coldflow.depot_music.entity.*;
 import co.coldflow.depot_music.repository.*;
-import co.coldflow.depot_music.service.StudentService;
+import co.coldflow.depot_music.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -32,6 +32,8 @@ public class DepotRunner implements ApplicationRunner{
     ReportRepository reportRepository;
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    AccountService accountService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -97,6 +99,9 @@ public class DepotRunner implements ApplicationRunner{
             }
             reportRepository.save(report);
         }
+
+        accountService.createAccount("admin", "1234", EUserRole.ROLE_ADMIN);
+        accountService.loadUserByUsername("admin");
     }
 
     public static String randomHangulName() {

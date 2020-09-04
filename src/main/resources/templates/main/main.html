@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:include="fragments/head :: head">
     <title id="pageTitle">Depot Music</title>
 </head>
@@ -7,6 +7,10 @@
     <div th:insert="~{fragments/nav :: menu}"></div>
     <div class="container">
         <h4>Depot Music 레슨관리시스템</h4>
+
+        <div sec:authorize="isAuthenticated()">
+            Roles: <span sec:authentication="principal.authorities"></span>
+            Logged user: <span sec:authentication="name"></span>
         </div>
     </div>
 </body>
