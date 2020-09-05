@@ -26,4 +26,9 @@ public class ParentRequestDto {
     public void setTel(String tel) {
         this.tel = tel;
     }
+
+    public ParentRequestDto(@NotEmpty @NotBlank String name, @NotEmpty @NotBlank String tel) {
+        this.name = name;
+        this.tel = tel;
+    }
 }

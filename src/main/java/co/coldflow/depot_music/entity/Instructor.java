@@ -15,8 +15,6 @@ public class Instructor extends BaseEntity {
     private String tel;
     private String memo;
     private String profileInfo;
-    private String username;
-    private String password;
     private String fileName;
     private String filePath;
 
@@ -27,6 +25,10 @@ public class Instructor extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name="instructor_id")
     )
     private List<Student> students = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name="account_id", nullable = false)
+    private Account account;
 
     public String getFileName() {
         return fileName;
@@ -84,27 +86,19 @@ public class Instructor extends BaseEntity {
         this.profileInfo = profileInfo;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public List<Student> getStudents() {
         return students;
     }
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

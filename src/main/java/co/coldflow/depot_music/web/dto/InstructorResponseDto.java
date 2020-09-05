@@ -27,7 +27,7 @@ public class InstructorResponseDto {
                 this.tel = instructor.getTel();
                 this.memo = instructor.getMemo();
                 this.profileInfo = instructor.getProfileInfo();
-                this.username = instructor.getUsername();
+                this.username = instructor.getAccount().getUsername();
                 this.portraitFileName = instructor.getFileName ();
 
                 for(Student s : instructor.getStudents()){

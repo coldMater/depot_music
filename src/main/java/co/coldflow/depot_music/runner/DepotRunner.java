@@ -3,6 +3,12 @@ package co.coldflow.depot_music.runner;
 import co.coldflow.depot_music.entity.*;
 import co.coldflow.depot_music.repository.*;
 import co.coldflow.depot_music.service.AccountService;
+import co.coldflow.depot_music.service.InstructorService;
+import co.coldflow.depot_music.service.ParentService;
+import co.coldflow.depot_music.service.StudentService;
+import co.coldflow.depot_music.web.dto.InstructorRequestDto;
+import co.coldflow.depot_music.web.dto.ParentRequestDto;
+import co.coldflow.depot_music.web.dto.StudentRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -25,9 +31,15 @@ public class DepotRunner implements ApplicationRunner{
     @Autowired
     InstructorRepository instructorRepository;
     @Autowired
+    InstructorService instructorService;
+    @Autowired
     ParentRepository parentRepository;
     @Autowired
+    ParentService parentService;
+    @Autowired
     StudentRepository studentRepository;
+    @Autowired
+    StudentService studentService;
     @Autowired
     ReportRepository reportRepository;
     @Autowired
@@ -48,34 +60,44 @@ public class DepotRunner implements ApplicationRunner{
         System.out.println(connection.getMetaData().getUserName());
 
         for(int i = 0; i < INSTRUCTOR_NUMBER; i++){
-            Instructor instructor = new Instructor();
-            instructor.setUsername("text_id_"+i);
-            instructor.setRealName(randomHangulName());
-            instructor.setTel("010-5023-123"+i%10);
-            instructorRepository.save(instructor);
+            instructorService.insertInstructor(new InstructorRequestDto(
+                "닉네임"+i,
+                randomHangulName(),
+                "010-1234-432"+i%10,
+                "메모"+i,
+                "프로필 인포메이션"+i,
+                "username"+i,
+                "password"+i
+            ), null);
         }
 
         for(int i = 0; i < PARENT_NUMBER; i++){
-            Parent parent = new Parent();
-            parent.setName(randomHangulName());
-            parent.setTel("010-1234-123"+i%10);
-            parentRepository.save(parent);
+            parentService.insertParent(new ParentRequestDto(
+                    randomHangulName(), "010-7777-777"+(i%10)
+            ));
         }
 
         for(int i = 0; i < STUDENT_NUMBER; i++){
-            Student student = new Student();
-            student.setName(randomHangulName());
-            student.setTel("010-0000-000"+i%10);
-            student.setBirthDate(LocalDate.now().minusYears(15).minusDays(Math.round(Math.random()*365)));
-            student.setStudentType(Math.random()>0.5?EStudentType.ADULT:EStudentType.CHILDREN);
-            if(student.getStudentType() == EStudentType.CHILDREN) {
-                Parent parent = parentRepository.findById(Math.round(Math.ceil(Math.random()*PARENT_NUMBER))).get();
-                student.setParent(parent);
+            Long parentId = null;
+            EStudentType type = Math.random()>0.5?EStudentType.ADULT:EStudentType.CHILDREN;
+            if(type == EStudentType.CHILDREN) {
+                parentId = parentRepository.findById(Math.round(Math.ceil(Math.random()*PARENT_NUMBER))).get().getId();
             }
-            Instructor instructor = instructorRepository.findById(Math.round(Math.ceil(Math.random()*INSTRUCTOR_NUMBER))).get();
-            instructor.getStudents().add(student);
 
-            studentRepository.save(student);
+            long studentId = studentService.insertStudent(
+                    new StudentRequestDto(
+                        randomHangulName(),
+                        LocalDate.now().minusYears(15).minusDays(Math.round(Math.random()*365)),
+                        "010-0000-000"+i%10,
+                        "email"+i+"@depot.com",
+                        "주소 광주 어딘가 섬웨어 "+i,
+                        type,
+                        parentId
+                    )
+            );
+
+            Instructor instructor = instructorRepository.findById(Math.round(Math.ceil(Math.random()*INSTRUCTOR_NUMBER))).get();
+            instructor.getStudents().add(studentRepository.findById(studentId).get());
         }
 
         for(long i = 0L; i<REPORT_NUMBER; i++){

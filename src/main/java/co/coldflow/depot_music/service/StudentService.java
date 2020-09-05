@@ -1,8 +1,6 @@
 package co.coldflow.depot_music.service;
 
-import co.coldflow.depot_music.entity.EStudentType;
-import co.coldflow.depot_music.entity.Parent;
-import co.coldflow.depot_music.entity.Student;
+import co.coldflow.depot_music.entity.*;
 import co.coldflow.depot_music.repository.ParentRepository;
 import co.coldflow.depot_music.repository.StudentRepository;
 import co.coldflow.depot_music.web.dto.ParentResponseDto;
@@ -22,13 +20,17 @@ import java.util.Optional;
 public class StudentService {
     private final StudentRepository studentRepository;
     private final ParentRepository parentRepository;
+    private final AccountService accountService;
 
-    public StudentService(StudentRepository studentRepository, ParentRepository parentRepository) {
+    public StudentService(StudentRepository studentRepository, ParentRepository parentRepository, AccountService accountService) {
         this.studentRepository = studentRepository;
         this.parentRepository = parentRepository;
+        this.accountService = accountService;
     }
 
     public Long insertStudent(StudentRequestDto studentRequestDto){
+        Account account = accountService.createAccount(studentRequestDto.getName(), studentRequestDto.getTel(), EUserRole.ROLE_STUDENT);
+
         Student student = new Student();
 
         student.setAddress(studentRequestDto.getAddress());

@@ -1,7 +1,10 @@
 package co.coldflow.depot_music.service;
 
+import co.coldflow.depot_music.entity.Account;
+import co.coldflow.depot_music.entity.EUserRole;
 import co.coldflow.depot_music.entity.Instructor;
 import co.coldflow.depot_music.entity.Student;
+import co.coldflow.depot_music.repository.AccountRepository;
 import co.coldflow.depot_music.repository.InstructorRepository;
 import co.coldflow.depot_music.repository.StudentRepository;
 import co.coldflow.depot_music.web.dto.InstructorRequestDto;
@@ -21,24 +24,28 @@ import java.nio.file.Path;
 public class InstructorService {
     private final InstructorRepository instructorRepository;
     private final StudentRepository studentRepository;
+    private final AccountService accountService;
 
-    public InstructorService(InstructorRepository instructorRepository, StudentRepository studentRepository) {
+    public InstructorService(InstructorRepository instructorRepository, StudentRepository studentRepository, AccountService accountService) {
         this.instructorRepository = instructorRepository;
         this.studentRepository = studentRepository;
+        this.accountService = accountService;
     }
 
     public Long insertInstructor(InstructorRequestDto instructorRequestDto, Path filePath) {
+        Account account = accountService.createAccount(instructorRequestDto.getUsername(), instructorRequestDto.getPassword(), EUserRole.ROLE_INSTRUCTOR);
+
         Instructor instructorToBeSaved = new Instructor();
 
+        instructorToBeSaved.setAccount(account);
         instructorToBeSaved.setNickName(instructorRequestDto.getNickName());
         instructorToBeSaved.setRealName(instructorRequestDto.getRealName());
         instructorToBeSaved.setTel(instructorRequestDto.getTel());
         instructorToBeSaved.setMemo(instructorRequestDto.getMemo());
         instructorToBeSaved.setProfileInfo(instructorRequestDto.getProfileInfo());
-        instructorToBeSaved.setUsername(instructorRequestDto.getUsername());
-        instructorToBeSaved.setPassword(instructorRequestDto.getPassword());
-        instructorToBeSaved.setFileName(instructorRequestDto.getPortrait().getOriginalFilename());
-        instructorToBeSaved.setFilePath(filePath.toString());
+        instructorToBeSaved.setFileName(instructorRequestDto.getPortrait() != null ? instructorRequestDto.getPortrait().getOriginalFilename():"");
+        instructorToBeSaved.setFilePath(instructorRequestDto.getPortrait() != null ? filePath.toString(): "");
+
 
         Instructor instructorSaved = instructorRepository.save(instructorToBeSaved);
 

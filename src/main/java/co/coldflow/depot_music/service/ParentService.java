@@ -1,5 +1,7 @@
 package co.coldflow.depot_music.service;
 
+import co.coldflow.depot_music.entity.Account;
+import co.coldflow.depot_music.entity.EUserRole;
 import co.coldflow.depot_music.entity.Parent;
 import co.coldflow.depot_music.repository.ParentRepository;
 import co.coldflow.depot_music.web.dto.ParentRequestDto;
@@ -15,16 +17,21 @@ import java.util.List;
 @Transactional
 public class ParentService {
     private final ParentRepository parentRepository;
+    private final AccountService accountService;
 
-    public ParentService(ParentRepository parentRepository) {
+    public ParentService(ParentRepository parentRepository, AccountService accountService) {
         this.parentRepository = parentRepository;
+        this.accountService = accountService;
     }
 
     public ParentResponseDto insertParent(ParentRequestDto parentRequestDto){
+        Account account = accountService.createAccount(parentRequestDto.getName(), parentRequestDto.getTel(), EUserRole.ROLE_PARENT);
+
         Parent parent = new Parent();
 
         parent.setName(parentRequestDto.getName());
         parent.setTel(parentRequestDto.getTel());
+        parent.setAccount(account);
 
         parentRepository.save(parent);
 

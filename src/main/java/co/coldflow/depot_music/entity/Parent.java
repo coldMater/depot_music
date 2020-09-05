@@ -3,11 +3,17 @@ package co.coldflow.depot_music.entity;
 import co.coldflow.depot_music.entity.Base.BaseEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Parent extends BaseEntity {
     private String name;
     private String tel;
+
+    @OneToOne
+    @JoinColumn(name="account_id")
+    private Account account;
 
     public String getName() {
         return name;
@@ -23,5 +29,13 @@ public class Parent extends BaseEntity {
 
     public void setTel(String tel) {
         this.tel = tel;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
