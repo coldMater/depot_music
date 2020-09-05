@@ -16,16 +16,16 @@ public class ReportController implements WebMvcConfigurer {
         this.reportService = reportService;
     }
 
-    @GetMapping("/reports")
+    @GetMapping("/admin/reports")
     public String getReportList(Model model) {
         model.addAttribute("reports", reportService.selectReportList());
-        return "report/reports";
+        return "admin/report/reports";
     }
 
-    @GetMapping("/reports/{id}")
+    @GetMapping("/admin/reports/{id}")
     public String getReport(Model model, @PathVariable long id) {
         ReportResponseDto reportResponseDto = reportService.selectReport(id);
         model.addAttribute(reportResponseDto);
-        return "report/report";
+        return "admin/report/report";
     }
 }

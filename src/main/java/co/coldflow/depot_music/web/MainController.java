@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
     @GetMapping("/")
-    public String getInstructors(Model model) {
+    public String getMainPage(Model model) {
         return "main/main";
     }
 
-
+    @GetMapping("/admin")
+    public String getAdminMainPage(Model model) {
+        return "admin/main";
+    }
 }

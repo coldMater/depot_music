@@ -14,13 +14,13 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/comments")
+    @PostMapping("/admin/comments")
     public ResponseEntity<CustomResponse> postComment(CommentRequestDto commentRequestDto) {
         long id = commentService.insertComment(commentRequestDto);
         return ResponseEntity.ok(new CustomResponse(id));
     }
 
-    @DeleteMapping("/comments/{commentId}")
+    @DeleteMapping("/admin/comments/{commentId}")
     public ResponseEntity<CustomResponse> deleteComment(@PathVariable long commentId) {
         commentService.deleteComment(commentId);
         return ResponseEntity.ok(new CustomResponse());

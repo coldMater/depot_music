@@ -21,51 +21,51 @@ public class StudentController implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("students/new").setViewName("student/student_form");
+        registry.addViewController("students/new").setViewName("admin/student/student_form");
     }
 
-    @GetMapping("/students")
+    @GetMapping("/admin/students")
     public String getStudents(Model model, StudentRequestDto studentRequestDto) {
         model.addAttribute("students", studentService.selectStudentList());
-        return "student/students";
+        return "admin/student/students";
     }
 
-    @GetMapping("/students/new")
-    public String postStudent(Model model, StudentRequestDto studentRequestDto) { return "student/student_form";}
+    @GetMapping("/admin/students/new")
+    public String postStudent(Model model, StudentRequestDto studentRequestDto) { return "/admin/student/student_form";}
 
-    @PostMapping("/students")
+    @PostMapping("/admin/students")
     public String postStudent(@Valid StudentRequestDto studentRequestDto, Errors errors, Model model) {
         if (null != errors && errors.getErrorCount() > 0) {
-            return "student/student_form";
+            return "admin/student/student_form";
         } else {
             long id = studentService.insertStudent(studentRequestDto);
 
             model.addAttribute(studentRequestDto);
-            return "redirect:/students/"+id;
+            return "redirect:/admin/students/"+id;
         }
     }
 
-    @GetMapping("/students/{id}")
+    @GetMapping("/admin/students/{id}")
     public String getStudent(@PathVariable long id, Model model){
         StudentResponseDto studentResponseDto = studentService.selectStudent(id);
 
         model.addAttribute(studentResponseDto);
 
-        return "student/student";
+        return "admin/student/student";
     }
 
-    @GetMapping("/students/{id}/edit")
+    @GetMapping("/admin/students/{id}/edit")
     public String getStudentUpdateForm(@PathVariable long id, Model model) {
         StudentResponseDto studentResponseDto = studentService.selectStudent(id);
 
         model.addAttribute(studentResponseDto);
 
-        return "student/student_form_update";
+        return "admin/student/student_form_update";
     }
 
-    @PostMapping("/students/{id}/edit")
+    @PostMapping("/admin/students/{id}/edit")
     public String putStudentForm(@PathVariable long id, StudentRequestDto studentRequestDto) {
         studentService.updateStudent(id, studentRequestDto);
-        return "redirect:/students/" + id;
+        return "redirect:/admin/students/" + id;
     }
 }

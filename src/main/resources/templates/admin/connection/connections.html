@@ -4,7 +4,7 @@
     <title id="pageTitle">수강생 연결</title>
 </head>
 <body>
-    <div th:insert="~{fragments/nav :: menu}"></div>
+    <div th:insert="~{admin/nav/nav :: menu}"></div>
     <div class="container">
         <h4>수강생 연결</h4>
         <div class="table-responsive">
@@ -25,7 +25,7 @@
                         <th class="d-none d-sm-block" th:text="${instructor.tel}"></th>
                         <th class="text-right" th:text="${instructor.students.size()}"></th>
                         <th>
-                            <a th:href="@{/connections/__${instructor.id}__}"><i class="fas fa-link"></i> 연결</a>
+                            <a th:href="@{/admin/connections/__${instructor.id}__}"><i class="fas fa-link"></i> 연결</a>
                         </th>
                     </tr>
                 </tbody>

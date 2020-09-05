@@ -4,10 +4,10 @@
     <title id="pageTitle">수강생 등록</title>
 </head>
 <body>
-    <div th:insert="~{fragments/nav :: menu}"></div>
-    <div class="container">
+    <div th:insert="~{admin/nav/nav :: menu}"></div>
+    <div class="container" th:object="${studentResponseDto}">
         <h4>수강생 등록</h4>
-        <form action="#" th:action="@{/students}" th:object="${studentRequestDto}" method="post">
+        <form action="#" th:action="@{/admin/students/__${studentResponseDto.id}__/edit}" method="post">
             <div class="form-group">
                 <label for="student_name">이름</label>
                 <input required type="text" id="student_name" class="form-control" name="name" th:field="*{name}">
@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label for="student_address">주소</label>
-                <input type="text" id="student_address" class="form-control" name="address">
+                <input type="text" id="student_address" class="form-control" name="address" th:field="*{address}">
             </div>
             <div class="form-group">
                 <label for="studentType">유형</label>
@@ -41,12 +41,12 @@
                     </select>
                 </div>
             </div>
-            <div id="parentWrapper" class="d-none">
+            <div id="parentWrapper" th:class="${studentResponseDto.studentType==T(co.coldflow.depot_music.entity.EStudentType).ADULT}?'d-none':''">
                 <label for="parentNameInput">학부모</label>
                 <div class="form-group" id="student_parent" >
                     <div class="input-group mb-3">
-                        <input type="hidden" id="parentId" class="form-control" name="parentId" th:field="*{parentId}">
-                        <input type="text" id="parentNameInput" class="form-control" name="parentName" disabled>
+                        <input type="hidden" id="parentId" class="form-control" name="parentId" th:value="${studentResponseDto.parent!=null ? studentResponseDto.parent.id:''}" >
+                        <input type="text" id="parentNameInput" class="form-control" name="parentName" disabled th:value="${studentResponseDto.parent!=null ? studentResponseDto.parent.name + ' (' + studentResponseDto.parent.tel + ')': ''}">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" data-toggle="modal" type="button" data-target="#parentSearchModal" id="parent_search_modal_open_button">검색</button>
                         </div>
@@ -55,7 +55,7 @@
             </div>
             <hr>
             <div class="my-4">
-                <input type="submit" class="btn btn-primary btn-block" value="등록">
+                <input type="submit" class="btn btn-danger btn-block" value="수정">
             </div>
 
         </form>
@@ -182,6 +182,8 @@
                     })
                 }
             }
+
+            parentRequest.setRequestHeader("X-CSRF-Token", "[[${_csrf.token}]]");
             parentRequest.send(formData);
         })
 
@@ -224,7 +226,7 @@
                         tbody.appendChild(tr);
                     })
                 } else {
-                    console.error(responseJSON);
+                    console.error(responseJSON.errors);
                 }
             }
             parentRequest.send();

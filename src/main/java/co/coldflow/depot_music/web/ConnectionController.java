@@ -16,19 +16,19 @@ public class ConnectionController implements WebMvcConfigurer {
         this.instructorService = instructorService;
     }
 
-    @GetMapping("/connections")
+    @GetMapping("/admin/connections")
     public String getInstructorListForConnection(Model model) {
         model.addAttribute("instructors", instructorService.selectInstructorList());
-        return "connection/connections";
+        return "admin/connection/connections";
     }
 
-    @GetMapping("/connections/{instructorId}")
+    @GetMapping("/admin/connections/{instructorId}")
     public String getStudent(@PathVariable long instructorId, Model model){
         InstructorResponseDto instructorResponseDto = instructorService.selectInstructor(instructorId);
 
         model.addAttribute(instructorResponseDto);
 
-        return "connection/connection";
+        return "admin/connection/connection";
     }
 //
 //

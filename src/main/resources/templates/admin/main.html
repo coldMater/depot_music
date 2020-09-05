@@ -4,9 +4,9 @@
     <title id="pageTitle">Depot Music</title>
 </head>
 <body>
-    <div th:insert="~{main/nav :: menu}"></div>
+    <div th:insert="~{admin/nav/nav :: menu}"></div>
     <div class="container">
-        <h4>Depot Music 레슨관리시스템</h4>
+        <h4>Depot Music 레슨관리시스템 - 관리자</h4>
 
         <div sec:authorize="isAuthenticated()">
             Roles: <span sec:authentication="principal.authorities"></span>

@@ -29,22 +29,22 @@ public class InstructorController {
         this.instructorService = instructorService;
     }
 
-    @GetMapping("/instructors")
+    @GetMapping("/admin/instructors")
     public String getInstructors(Model model) {
         model.addAttribute("instructors", instructorService.selectInstructorList());
-        return "instructor/instructors";
+        return "/admin/instructor/instructors";
     }
 
-    @GetMapping("/instructors/{id}")
+    @GetMapping("/admin/instructors/{id}")
     public String getInstructorById(@PathVariable long id, Model model) {
         InstructorResponseDto instructorResponseDto = instructorService.selectInstructor(id);
 
         model.addAttribute(instructorResponseDto);
 
-        return "instructor/instructor";
+        return "/admin/instructor/instructor";
     }
 
-    @PostMapping("/instructors")
+    @PostMapping("/admin/instructors")
     public String postInstructor(InstructorRequestDto instructorRequestDto) throws IOException {
         MultipartFile file = instructorRequestDto.getPortrait();
 
@@ -61,27 +61,27 @@ public class InstructorController {
 
         Long id = instructorService.insertInstructor(instructorRequestDto, targetPath);
 
-        return "redirect:/instructors/"+id;
+        return "redirect:/admin/instructors/"+id;
     }
 
-    @GetMapping("/instructors/new")
+    @GetMapping("/admin/instructors/new")
     public String getInstructorForm() {
-        return "instructor/instructor_form";
+        return "admin/instructor/instructor_form";
     }
 
-    @GetMapping("/instructors/{id}/edit")
+    @GetMapping("/admin/instructors/{id}/edit")
     public String getInstructorUpdateForm(@PathVariable long id, Model model) {
         InstructorResponseDto instructorResponseDto = instructorService.selectInstructor(id);
 
         model.addAttribute(instructorResponseDto);
 
-        return "instructor/instructor_form_update";
+        return "admin/instructor/instructor_form_update";
     }
 
-    @PostMapping("/instructors/{id}/edit")
+    @PostMapping("/admin/instructors/{id}/edit")
     public String putInstructor(@PathVariable long id, InstructorRequestDto instructorRequestDto) {
         instructorService.updateInstructor(id, instructorRequestDto);
-        return "redirect:/instructors/" + id;
+        return "redirect:/admin/instructors/" + id;
     }
 
     @GetMapping("/portrait/{id}")

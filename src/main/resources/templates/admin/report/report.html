@@ -2,9 +2,12 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:include="fragments/head :: head">
     <title id="pageTitle">수강일지 상세보기</title>
+<!--    <meta th:name="_csrf" th:content="${_csrf.token}"/>-->
+<!--    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+
 </head>
     <body>
-        <div th:include="fragments/nav :: menu"></div>
+        <div th:include="admin/nav/nav :: menu"></div>
         <div class="container" th:object="${reportResponseDto}">
             <h4>수강일지 상세보기</h4>
             <form>
@@ -158,7 +161,7 @@
 
             document.getElementById("delete-comment-button").addEventListener('click', (e) => {
                 const deleteCommentRequest = new XMLHttpRequest();
-                deleteCommentRequest.open("DELETE", "/comments/"+commentIdToBeDelete, true);
+                deleteCommentRequest.open("DELETE", "/admin/comments/"+commentIdToBeDelete, true);
                 deleteCommentRequest.onload = function(ev) {
                     const responseJSON = JSON.parse(ev.currentTarget.response);
                     if(deleteCommentRequest.status === 200){
@@ -167,6 +170,7 @@
                         console.error(responseJSON.errors);
                     }
                 }
+                deleteCommentRequest.setRequestHeader("X-CSRF-Token", "[[${_csrf.token}]]");
                 deleteCommentRequest.send();
             })
 
@@ -177,7 +181,7 @@
                 formData.append('content', document.getElementById("commentContent").value);
 
                 const writeCommentRequest = new XMLHttpRequest();
-                writeCommentRequest.open("POST", "/comments", true);
+                writeCommentRequest.open("POST", "/admin/comments", true);
                 writeCommentRequest.onload = function(ev) {
                     const responseJSON = JSON.parse(ev.currentTarget.response);
                     if(writeCommentRequest.status ===200){
@@ -186,6 +190,7 @@
                         console.error(responseJSON.errors);
                     }
                 }
+                writeCommentRequest.setRequestHeader("X-CSRF-Token", "[[${_csrf.token}]]");
                 writeCommentRequest.send(formData);
             })
         </script>

@@ -27,7 +27,7 @@ public class StudentParentController {
         this.instructorService = instructorService;
     }
 
-    @PostMapping("/students/parent")
+    @PostMapping("/admin/students/parent")
     public ResponseEntity<CustomResponse> postParentFromStudentForm(@Valid ParentRequestDto parentRequestDto, Errors errors, Model model) {
         if (null != errors && errors.getErrorCount() > 0) {
             return new ResponseEntity(new CustomResponse("", errors.getFieldErrors()), HttpStatus.BAD_REQUEST);
@@ -38,25 +38,25 @@ public class StudentParentController {
         }
     }
 
-    @GetMapping("/students/parent")
+    @GetMapping("/admin/students/parent")
     public ResponseEntity<CustomResponse> getParentFromStudentForm(Model model, @RequestParam(value = "keyword") String keyword ){
         List<ParentResponseDto> parentList = parentService.selectParentList(keyword);
         return ResponseEntity.ok(new CustomResponse(parentList));
     }
 
-    @GetMapping("/students/student")
+    @GetMapping("/admin/students/student")
     public ResponseEntity<CustomResponse> getStudentFromConnectionForm(Model model, @RequestParam(value = "keyword") String keyword){
         List<StudentResponseDto> studentList = studentService.selectStudentListByKeyword(keyword);
         return ResponseEntity.ok(new CustomResponse(studentList));
     }
 
-    @PostMapping("/connections/{instructorId}/{studentId}")
+    @PostMapping("/admin/connections/{instructorId}/{studentId}")
     public ResponseEntity<CustomResponse> linkStudent(@PathVariable long instructorId, @PathVariable long studentId, Model model) {
         instructorService.linkStudent(instructorId, studentId);
         return ResponseEntity.ok(new CustomResponse());
     }
 
-    @PostMapping("/connections/release/{instructorId}/{studentId}")
+    @PostMapping("/admin/connections/release/{instructorId}/{studentId}")
     public ResponseEntity<CustomResponse> unlinkStudent(@PathVariable long instructorId, @PathVariable long studentId, Model model) {
         instructorService.unlinkStudent(instructorId, studentId);
         return ResponseEntity.ok(new CustomResponse());

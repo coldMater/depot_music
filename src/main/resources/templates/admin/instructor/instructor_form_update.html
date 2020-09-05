@@ -4,10 +4,10 @@
     <title id="pageTitle">강사수정</title>
 </head>
 <body>
-    <div th:insert="~{fragments/nav :: menu}"></div>
+    <div th:insert="~{admin/nav/nav :: menu}"></div>
     <div class="container" th:object="${instructorResponseDto}">
         <h4>강사수정</h4>
-        <form th:action="@{/instructors/__${instructorResponseDto.id}__/edit}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/admin/instructors/__${instructorResponseDto.id}__/edit}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="instructor_nick_name"> 프로필 닉네임 </label>
                 <input type="text" id="instructor_nick_name" class="form-control" name="nickName" th:value="*{nickName}">

@@ -4,7 +4,7 @@
     <title id="pageTitle">수강일지</title>
 </head>
 <body>
-    <div th:insert="~{fragments/nav :: menu}"></div>
+    <div th:insert="~{admin/nav/nav :: menu}"></div>
     <div class="container">
         <h4>수강일지</h4>
         <div class="table-responsive">
@@ -30,7 +30,7 @@
                         <th th:text="${report.instructorName}"></th>
                         <th th:text="${report.studentName}"></th>
                         <th>
-                            <a th:href="@{/reports/__${report.id}__}"><i class="fas fa-scroll"></i></a>
+                            <a th:href="@{/admin/reports/__${report.id}__}"><i class="fas fa-scroll"></i></a>
                         </th>
                     </tr>
                 </tbody>

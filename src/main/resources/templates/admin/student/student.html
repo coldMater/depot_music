@@ -4,10 +4,10 @@
     <title id="pageTitle">수강생정보</title>
 </head>
 <body>
-    <div th:include="fragments/nav :: menu"></div>
+    <div th:include="admin/nav/nav :: menu"></div>
     <div class="container" th:object="${studentResponseDto}">
         <h4>수강생정보</h4>
-        <form th:action="@{/students}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/admin/students}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="student_name"> 이름 </label>
                 <input type="text" id="student_name" class="form-control " name="nickName" readonly th:value="*{name}">
@@ -51,8 +51,8 @@
         </form>
 
         <div class="d-flex mb-5">
-            <a th:href="@{/students/__${studentResponseDto.id}__/edit}" class="btn btn-danger text-white"><i class="fas fa-pencil-alt"></i> 수정</a>
-            <a th:href="@{/students}" class="btn btn-secondary ml-auto"><i class="fas fa-bars"></i> 목록</a>
+            <a th:href="@{/admin/students/__${studentResponseDto.id}__/edit}" class="btn btn-danger text-white"><i class="fas fa-pencil-alt"></i> 수정</a>
+            <a th:href="@{/admin/students}" class="btn btn-secondary ml-auto"><i class="fas fa-bars"></i> 목록</a>
         </div>
 
     </div>

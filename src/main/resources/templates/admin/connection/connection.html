@@ -4,7 +4,7 @@
     <title id="pageTitle">연결 상세 정보</title>
 </head>
 <body>
-    <div th:include="fragments/nav :: menu"></div>
+    <div th:include="admin/nav/nav :: menu"></div>
     <div class="container" th:object="${instructorResponseDto}">
         <h4>연결 상세 정보</h4>
         <form>
@@ -17,7 +17,7 @@
         </form>
 
         <div class="d-flex mb-5 align-items-center">
-            <a th:href="@{/connections}" class="btn btn-secondary ml-auto"><i class="fas fa-bars"></i> 목록</a>
+            <a th:href="@{/admin/connections}" class="btn btn-secondary ml-auto"><i class="fas fa-bars"></i> 목록</a>
             <a class="btn btn-success text-white ml-1" data-toggle="modal" data-target="#studentSearchModal"><i class="fas fa-link"></i> 수강생 연결</a>
         </div>
 
@@ -92,7 +92,7 @@
             e.preventDefault();
             const keyword = document.getElementById("student_name_input_for_search").value;
             const studentRequest = new XMLHttpRequest();
-            studentRequest.open("GET", "/students/student"+"?keyword="+keyword, true);
+            studentRequest.open("GET", "/admin/students/student"+"?keyword="+keyword, true);
             studentRequest.onload = function(ev) {
                 const responseJSON = JSON.parse(ev.currentTarget.response);
                 if(studentRequest.status === 200) {
@@ -113,7 +113,7 @@
                             eva.preventDefault();
                             const instructorId = [[ ${instructorResponseDto.id} ]];
                             const connectionRequest = new XMLHttpRequest();
-                            connectionRequest.open("POST", "/connections/"+instructorId+"/"+student.id, true);
+                            connectionRequest.open("POST", "/admin/connections/"+instructorId+"/"+student.id, true);
                             connectionRequest.addEventListener("load", (evc) => {
                                 if(connectionRequest.status === 200){
                                     $('#studentSearchModal').modal('hide')
@@ -122,8 +122,9 @@
                                     alert("문제가 발생했습니다. \r\n 이미 등록된 수강생일 수 있습니다.")
                                 }
                             })
-                            connectionRequest.send()
 
+                            connectionRequest.setRequestHeader("X-CSRF-Token", "[[${_csrf.token}]]");
+                            connectionRequest.send()
                         })
 
                         td_id.innerText = student.id;
@@ -149,7 +150,7 @@
                 const instructorId = e.currentTarget.getAttribute("data-instructor-id");
                 const studentId = e.currentTarget.getAttribute("data-student-id");
                 const releaseConnectionRequest = new XMLHttpRequest();
-                releaseConnectionRequest.open("POST", "/connections/release/"+instructorId+"/"+studentId);
+                releaseConnectionRequest.open("POST", "/admin/connections/release/"+instructorId+"/"+studentId);
                 releaseConnectionRequest.onload = function(ev) {
                     if(releaseConnectionRequest.status === 200){
                         history.go(0);
@@ -157,6 +158,8 @@
 
                     }
                 }
+
+                releaseConnectionRequest.setRequestHeader("X-CSRF-Token", "[[${_csrf.token}]]");
                 releaseConnectionRequest.send();
             })
         }

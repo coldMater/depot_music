@@ -4,11 +4,11 @@
     <title id="pageTitle">학생목록</title>
 </head>
 <body>
-    <div th:insert="~{fragments/nav :: menu}"></div>
+    <div th:insert="~{admin/nav/nav :: menu}"></div>
     <div class="container">
         <h4>학생목록</h4>
         <div class="d-flex mb-5">
-            <a th:href="@{/students/new}" class="btn btn-primary ml-auto">신규</a>
+            <a th:href="@{/admin/students/new}" class="btn btn-primary ml-auto">신규</a>
         </div>
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -24,7 +24,7 @@
                     <tr th:each="student: ${students}">
                         <th th:text="${student.id}"></th>
                         <th>
-                            <a th:href="@{/students/__${student.id}__}" th:text="${student.name}"></a>
+                            <a th:href="@{/admin/students/__${student.id}__}" th:text="${student.name}"></a>
                         </th>
                         <th class="d-none d-sm-block" th:text="${student.birthDate}"></th>
                         <th th:text="${student.tel}"></th>
