@@ -35,6 +35,40 @@
                     </tr>
                 </tbody>
             </table>
+            <nav
+                    th:if="${pagination.totalPageCount > 0}"
+            >
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/admin/reports?page=1}">
+                            <span aria-hidden="true">처음</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/admin/reports?page={page} (page = ${pagination.prevBlock})}">
+                            <span aria-hidden="true">이전</span>
+                        </a>
+                    </li>
+                    <th:block th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                        <li class="page-item"
+                            th:classappend="${pageButton==pagination.currentPage?'active':''}"
+                            th:with="start = ${pagination.startPage}, end = ${pagination.endPage}"
+                            th:each="pageButton : ${#numbers.sequence(start, end)}">
+                            <a class="page-link" th:href="@{/admin/reports?page={page} (page = ${pageButton})}" th:text=${pageButton}></a>
+                        </li>
+                    </th:block>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/admin/reports?page={page} (page = ${pagination.nextBlock})}">
+                            <span aria-hidden="true">다음</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/admin/reports?page={page} (page = ${pagination.totalPageCount})}">
+                            <span aria-hidden="true">끝</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
     </div>
 </body>
 </html>

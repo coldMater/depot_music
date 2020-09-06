@@ -1,12 +1,16 @@
 package co.coldflow.depot_music.web;
 
 import co.coldflow.depot_music.service.ReportService;
+import co.coldflow.depot_music.web.dto.PaginationDto;
+import co.coldflow.depot_music.web.dto.ReportListResponseWithPageInfoDto;
 import co.coldflow.depot_music.web.dto.ReportResponseDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import java.util.List;
 
 @Controller
 public class ReportController implements WebMvcConfigurer {
@@ -17,8 +21,15 @@ public class ReportController implements WebMvcConfigurer {
     }
 
     @GetMapping("/admin/reports")
-    public String getReportList(Model model) {
-        model.addAttribute("reports", reportService.selectReportList());
+    public String getReportList(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+        final int BLOCK_SIZE = 10;
+
+        ReportListResponseWithPageInfoDto reportListResponseWithPageInfoDto = reportService.selectReportList(page, size);
+        List<ReportResponseDto> reports = reportListResponseWithPageInfoDto.getReports();
+        PaginationDto pagination = reportListResponseWithPageInfoDto.getPagination();
+
+        model.addAttribute("reports", reports);
+        model.addAttribute("pagination", pagination);
         return "admin/report/reports";
     }
 

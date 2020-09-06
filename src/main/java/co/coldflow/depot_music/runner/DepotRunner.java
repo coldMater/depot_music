@@ -54,7 +54,7 @@ public class DepotRunner implements ApplicationRunner{
         final long PARENT_NUMBER = 5L;
         final long STUDENT_NUMBER = 7L;
         final long INSTRUCTOR_NUMBER = 3L;
-        final long REPORT_NUMBER = 10L;
+        final long REPORT_NUMBER = 1234L;
 
         Connection connection = dataSource.getConnection();
 

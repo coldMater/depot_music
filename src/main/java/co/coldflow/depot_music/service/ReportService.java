@@ -4,8 +4,12 @@ import co.coldflow.depot_music.entity.Parent;
 import co.coldflow.depot_music.entity.Report;
 import co.coldflow.depot_music.repository.ReportRepository;
 import co.coldflow.depot_music.web.dto.ParentResponseDto;
+import co.coldflow.depot_music.web.dto.ReportListResponseWithPageInfoDto;
 import co.coldflow.depot_music.web.dto.ReportResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,16 +26,17 @@ public class ReportService {
         this.reportRepository = reportRepository;
     }
 
-    public List<ReportResponseDto> selectReportList() {
-        List<Report> reportList = reportRepository.findAll();
+    public ReportListResponseWithPageInfoDto selectReportList(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1 , size);
+        Page<Report> reportPage = reportRepository.findAll(pageable);
 
         List<ReportResponseDto> reportListToBeReturned = new ArrayList<>();
 
-        for(Report report: reportList){
+        for(Report report: reportPage){
             reportListToBeReturned.add(new ReportResponseDto(report));
         }
 
-        return reportListToBeReturned;
+        return new ReportListResponseWithPageInfoDto(reportPage.getTotalPages(), reportPage.getPageable(), reportListToBeReturned);
     }
 
     public ReportResponseDto selectReport(long id) {
