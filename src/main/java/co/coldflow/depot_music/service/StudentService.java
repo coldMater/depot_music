@@ -3,14 +3,12 @@ package co.coldflow.depot_music.service;
 import co.coldflow.depot_music.entity.*;
 import co.coldflow.depot_music.repository.ParentRepository;
 import co.coldflow.depot_music.repository.StudentRepository;
-import co.coldflow.depot_music.web.dto.ParentResponseDto;
-import co.coldflow.depot_music.web.dto.StudentRequestDto;
-import co.coldflow.depot_music.web.dto.StudentResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import co.coldflow.depot_music.dto.ParentResponseDto;
+import co.coldflow.depot_music.dto.StudentRequestDto;
+import co.coldflow.depot_music.dto.StudentResponseDto;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

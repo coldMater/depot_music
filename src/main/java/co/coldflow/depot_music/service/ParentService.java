@@ -4,9 +4,8 @@ import co.coldflow.depot_music.entity.Account;
 import co.coldflow.depot_music.entity.EUserRole;
 import co.coldflow.depot_music.entity.Parent;
 import co.coldflow.depot_music.repository.ParentRepository;
-import co.coldflow.depot_music.web.dto.ParentRequestDto;
-import co.coldflow.depot_music.web.dto.ParentResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import co.coldflow.depot_music.dto.ParentRequestDto;
+import co.coldflow.depot_music.dto.ParentResponseDto;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

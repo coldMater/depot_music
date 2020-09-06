@@ -18,13 +18,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/login-error").permitAll()
                 .antMatchers("/styles/**").permitAll()
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/fontawesome/**").permitAll()
                 .antMatchers("/bootstrap/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
+                .antMatchers("/instructor/**").hasRole("INSTRUCTOR")
                 .anyRequest().hasRole("ADMIN");
 
         http.formLogin()

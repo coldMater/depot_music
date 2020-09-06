@@ -4,7 +4,7 @@ import co.coldflow.depot_music.entity.Comment;
 import co.coldflow.depot_music.entity.Report;
 import co.coldflow.depot_music.repository.CommentRepository;
 import co.coldflow.depot_music.repository.ReportRepository;
-import co.coldflow.depot_music.web.dto.CommentRequestDto;
+import co.coldflow.depot_music.dto.CommentRequestDto;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

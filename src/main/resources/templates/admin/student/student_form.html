@@ -45,8 +45,8 @@
                 <label for="parentNameInput">학부모</label>
                 <div class="form-group" id="student_parent" >
                     <div class="input-group mb-3">
-                        <input type="hidden" id="parentId" class="form-control" name="parentId" th:field="*{parentId}">
                         <input type="text" id="parentNameInput" class="form-control" name="parentName" disabled>
+                        <input type="hidden" id="parentId" class="form-control" name="parentId" th:field="*{parentId}">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" data-toggle="modal" type="button" data-target="#parentSearchModal" id="parent_search_modal_open_button">검색</button>
                         </div>

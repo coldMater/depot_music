@@ -4,14 +4,11 @@ import co.coldflow.depot_music.entity.Account;
 import co.coldflow.depot_music.entity.EUserRole;
 import co.coldflow.depot_music.entity.Instructor;
 import co.coldflow.depot_music.entity.Student;
-import co.coldflow.depot_music.repository.AccountRepository;
 import co.coldflow.depot_music.repository.InstructorRepository;
 import co.coldflow.depot_music.repository.StudentRepository;
-import co.coldflow.depot_music.web.dto.InstructorRequestDto;
-import co.coldflow.depot_music.web.dto.InstructorResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import co.coldflow.depot_music.dto.InstructorRequestDto;
+import co.coldflow.depot_music.dto.InstructorResponseDto;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;

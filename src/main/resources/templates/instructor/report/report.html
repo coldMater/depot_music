@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/head :: head">
+    <title id="pageTitle">수강일지 상세보기</title>
+<!--    <meta th:name="_csrf" th:content="${_csrf.token}"/>-->
+<!--    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+
+</head>
+    <body>
+        <div th:include="instructor/nav/nav :: menu"></div>
+        <div class="container" th:object="${reportResponseDto}">
+            <h4>수강일지 상세보기</h4>
+            <form>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label col-form-label" for="instructorName"> 강사 </label>
+                    <div class="col-9">
+                        <input type="text" id="instructorName" class="form-control" name="instructorName" readonly th:value="*{instructorName}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label col-form-label" for="studentName"> 수강생 </label>
+                    <div class="col-9">
+                        <input type="text" id="studentName" class="form-control" name="studentName" readonly th:value="*{studentName}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label col-form-label" for="studentType">유형</label>
+                    <div class="input-group col-9 mb-3">
+                        <select id="studentType" name="studentType" class="custom-select" th:value="*{studentType}" disabled th:field="*{studentType}">
+                            <option value="ADULT">수강생</option>
+                            <option value="CHILDREN">학생(자녀)</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="parentWrapper" th:class="${reportResponseDto.studentType==T(co.coldflow.depot_music.entity.EStudentType).ADULT}?'d-none':''">
+                    <div class="form-group row ">
+                        <label class="col-3 col-form-label col-form-label" for="parentName"> 학부모 </label>
+                        <div class="col-9">
+                            <input type="text" id="parentName" class="form-control" name="parentName" readonly th:value="*{parentName}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label col-form-label" for="classDate"> 일시 </label>
+                    <div class="col-9">
+                        <input type="date" id="classDate" class="form-control mb-1" name="classDate" readonly th:value="*{classDate}">
+                        <input type="time" id="classTime" class="form-control" name="classTime" readonly th:value="*{classTime}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label col-form-label" for="runningTime"> 수업시간(분) </label>
+                    <div class="col-9">
+                        <input type="number" min="0" max="1000" step="5" id="runningTime" class="form-control mb-1" name="runningTime" readonly th:value="*{runningTime}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label col-form-label" for="program"> 프로그램 </label>
+                    <div class="col-sm-10">
+                        <input type="text" id="program" class="form-control" name="program" readonly th:value="*{program}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label col-form-label" for="subject"> 주제 </label>
+                    <div class="col-sm-10">
+                        <input type="text" id="subject" class="form-control" name="subject" readonly th:value="*{subject}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label col-form-label" for="result"> 수업결과 </label>
+                    <div class="col-sm-10">
+                        <textarea id="result" class="form-control" name="result" readonly th:text="*{result}" style="resize: none;" rows="4"></textarea>
+                    </div>
+                </div>
+            </form>
+            <div class="d-flex mb-5">
+                <a th:href="@{/instructor/reports/__*{id}__/edit}" class="btn btn-danger text-white"><i class="fas fa-pencil-alt"></i> 수정</a>
+                <a th:href="@{/instructor/reports}" class="btn btn-secondary ml-auto"><i class="fas fa-bars"></i> 목록</a>
+            </div>
+        </div>
+    </body>
+</html>

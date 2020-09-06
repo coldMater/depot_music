@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/head :: head">
+    <title id="pageTitle">수강 일지 등록</title>
+</head>
+<body>
+    <div th:insert="~{instructor/nav/nav :: menu}"></div>
+    <div class="container">
+        <h4>수강 일지 등록</h4>
+        <form th:action="@{/instructor/reports/new}" th:object="${reportRequestDto}" method="post">
+            <div class="form-group row">
+                <label class="col-3 col-form-label col-form-label" for="instructorName"> 강사 </label>
+                <div class="col-9">
+                    <input type="text" id="instructorName" class="form-control" name="instructorName" disabled th:value="${instructorName}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-3 col-form-label col-form-label" for="studentName"> 수강생 </label>
+                <div class="col-9 input-group mb-3">
+                    <input type="text" id="studentName" class="form-control" th:classappend="${#fields.hasErrors('studentId')?'is-invalid':'id-valid'}" name="studentName" disabled>
+                    <input type="hidden" id="studentId" class="form-control" name="studentId" th:field="*{studentId}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary rounded-right" data-toggle="modal" type="button" data-target="#studentSearchModal" id="student_search_modal_open_button">검색</button>
+                    </div>
+                    <div class="invalid-feedback" th:errors="*{studentId}"></div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label col-form-label" for="runningTime"> 수업시간(분) </label>
+                <div class="col-sm-10">
+                    <input required type="number" min="0" max="1000" step="5" id="runningTime" class="form-control" name="runningTime" th:field="*{runningTime}">
+                </div>
+            </div>
+            <p class="alert alert-danger" th:if="${#fields.hasErrors('runningTime')}" th:errors="*{runningTime}"></p>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label col-form-label" for="program"> 프로그램 </label>
+                <div class="col-sm-10">
+                    <input required type="text" id="program" class="form-control" name="program" th:field="*{program}">
+                </div>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('program')}" th:errors="*{program}">
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label col-form-label" for="subject"> 주제 </label>
+                <div class="col-sm-10">
+                    <input required type="text" id="subject" class="form-control" name="subject" th:field="*{subject}">
+                </div>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}">
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label col-form-label" for="result"> 수업결과 </label>
+                <div class="col-sm-10">
+                    <textarea required id="result" class="form-control" name="result" th:field="*{result}" style="resize: none;" rows="4"></textarea>
+                </div>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('result')}" th:errors="*{result}">
+            </div>
+            <div class="my-4">
+                <input type="submit" class="btn btn-primary btn-block" value="등록">
+            </div>
+        </form>
+    </div>
+    <div class="modal fade" id="studentSearchModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">수강생 검색</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <input type="text" id="student_name_input_for_search" class="form-control" name="studentName" placeholder="수강생명">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" data-toggle="modal" type="buttwww.bootstrapon" id="student_search_button">검색</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="table-responsive table table-sm" style="max-height: 300px; overflow: auto">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">이름</th>
+                                <th scope="col">전화번호</th>
+                            </tr>
+                            </thead>
+                            <tbody id="student_table_body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#postParentModal" >신규등록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        /* 수강생 조회 검색 버튼 클릭시 */
+        document.getElementById("student_search_button").addEventListener("click", (e) => {
+            e.preventDefault();
+            const keyword = document.getElementById("student_name_input_for_search").value;
+            const studentRequest = new XMLHttpRequest();
+            studentRequest.open("GET", "/instructor/students/student"+"?keyword="+keyword, true);
+            studentRequest.onload = function(ev) {
+                const responseJSON = JSON.parse(ev.currentTarget.response);
+                if(studentRequest.status === 200) {
+                    const studentList = responseJSON.data;
+                    const tbody = document.getElementById("student_table_body");
+                    tbody.innerHTML=""; /*검색시 부모 리스트 테이블 초기화*/
+
+                    studentList.forEach(student => { /*학부모 검색 모달에서 학부모 리스트 표현하는 테이블*/
+                        const tr = document.createElement("tr");
+                        const td_id = document.createElement("td");
+                        const td_name = document.createElement("td");
+                        const td_tel = document.createElement("td");
+
+                        const a_name = document.createElement('a');
+                        a_name.href = "#";
+                        a_name.innerText = student.name;
+                        a_name.addEventListener("click", (e) => {
+                            console.log('hi');
+                            document.getElementById("studentId").value = student.id;
+                            document.getElementById("studentName").value = `${student.name} (${student.tel})`;
+                            $('#studentSearchModal').modal('hide')
+                        })
+
+                        td_id.innerText = student.id;
+                        td_name.appendChild(a_name);
+                        td_tel.innerText = student.tel;
+
+                        tr.appendChild(td_id);
+                        tr.appendChild(td_name);
+                        tr.appendChild(td_tel);
+
+                        tbody.appendChild(tr);
+                    })
+                } else {
+                    console.error(responseJSON);
+                }
+            }
+            studentRequest.send();
+        })
+    </script>
+</body>
+</html>

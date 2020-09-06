@@ -2,8 +2,8 @@ package co.coldflow.depot_music.service;
 
 import co.coldflow.depot_music.entity.BasicInformation;
 import co.coldflow.depot_music.repository.BasicInformationRepository;
-import co.coldflow.depot_music.web.dto.BasicInformationRequestDto;
-import co.coldflow.depot_music.web.dto.BasicInformationResponseDto;
+import co.coldflow.depot_music.dto.BasicInformationRequestDto;
+import co.coldflow.depot_music.dto.BasicInformationResponseDto;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
