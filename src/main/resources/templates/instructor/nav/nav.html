@@ -3,26 +3,20 @@
     <body>
         <div th:fragment="menu">
             <nav th:fragment="menu" class="navbar navbar-expand-lg navbar-dark bg-dark shadow mb-3">
-                <a class="navbar-brand" th:href="@{/admin}"><i class="fas fa-guitar"></i> Cellar Music</a>
+                <a class="navbar-brand" th:href="@{/instructor}"><i class="fas fa-guitar"></i> Cellar Music</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/instructors}">강사</a>
+                            <a class="nav-link" th:href="@{/instructor/report}">수강일지</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/students}">수강생</a>
+                            <a class="nav-link" th:href="@{/instructor/profile}">내 정보 보기</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/connections}">수강생 연결</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/reports}">수강일지</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/basic_information}">기본정보</a>
+                            <a class="nav-link" th:href="@{/instructor/connections}">비밀번호 변경</a>
                         </li>
                     </ul>
                     <div class="ml-auto">

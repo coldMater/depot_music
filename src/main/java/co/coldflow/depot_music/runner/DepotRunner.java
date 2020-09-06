@@ -46,6 +46,8 @@ public class DepotRunner implements ApplicationRunner{
     CommentRepository commentRepository;
     @Autowired
     AccountService accountService;
+    @Autowired
+    BasicInformationRepository basicInformationRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
