@@ -70,7 +70,7 @@ public class DepotRunner implements ApplicationRunner{
                 "프로필 인포메이션"+i,
                 "username"+i,
                 "password"+i
-            ), null);
+            ));
         }
 
         for(int i = 0; i < PARENT_NUMBER; i++){

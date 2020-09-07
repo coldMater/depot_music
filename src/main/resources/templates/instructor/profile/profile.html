@@ -14,10 +14,10 @@
     }
 </style>
 <body>
-    <div th:include="admin/nav/nav :: menu"></div>
-    <div class="container" th:object="${instructorResponseDto}">
-        <h4>강사정보</h4>
-        <form th:action="@{/admin/instructors}" method="post" enctype="multipart/form-data">
+<div th:include="instructor/nav/nav :: menu"></div>
+<div class="container" th:object="${instructorResponseDto}">
+    <h4>강사정보</h4>
+        <form th:action="@{/instructor/profile}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="instructor_nick_name"> 프로필 닉네임 </label>
                 <input type="text" id="instructor_nick_name" class="form-control " name="nickName" readonly th:value="*{nickName}">
@@ -56,10 +56,10 @@
         </form>
 
         <div class="d-flex mb-6">
-            <a th:href="@{/admin/instructors/__${instructorResponseDto.id}__/edit}" class="btn btn-danger text-white"><i class="fas fa-pencil-alt"></i> 수정</a>
-            <a th:href="@{/admin/instructors}" class="btn btn-secondary ml-auto"><i class="fas fa-bars"></i> 목록</a>
+            <a th:href="@{/instructor/profile/edit}" class="btn btn-danger text-white"><i class="fas fa-pencil-alt"></i> 수정</a>
         </div>
 
+        <br>
     </div>
     <script>
         const inputFile = document.createElement("input");
@@ -79,7 +79,7 @@
             formData.append('portrait', file);
 
             const changePortraitRequest = new XMLHttpRequest();
-            changePortraitRequest.open("PUT", '/admin/portrait/[[${instructorResponseDto.id}]]');
+            changePortraitRequest.open("PUT", '/instructor/portrait');
 
             changePortraitRequest.addEventListener('load', (ev) => {
                 const responseJSON = JSON.parse(ev.currentTarget.response);

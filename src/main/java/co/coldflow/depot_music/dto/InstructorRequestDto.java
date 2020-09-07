@@ -1,8 +1,5 @@
 package co.coldflow.depot_music.dto;
 
-
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.Objects;
 
 public class InstructorRequestDto {
@@ -13,7 +10,6 @@ public class InstructorRequestDto {
         private String profileInfo;
         private String username;
         private String password;
-        private MultipartFile portrait;
 
         public InstructorRequestDto(String nickName, String realName, String tel, String memo, String profileInfo, String username, String password) {
                 this.nickName = nickName;
@@ -81,14 +77,6 @@ public class InstructorRequestDto {
                 this.password = password;
         }
 
-        public MultipartFile getPortrait() {
-                return portrait;
-        }
-
-        public void setPortrait(MultipartFile portrait) {
-                this.portrait = portrait;
-        }
-
         @Override
         public String toString() {
                 return "InstructorRequestDto{" +
@@ -99,7 +87,6 @@ public class InstructorRequestDto {
                         ", profileInfo='" + profileInfo + '\'' +
                         ", username='" + username + '\'' +
                         ", password='" + password + '\'' +
-                        ", portrait=" + portrait.getOriginalFilename() +
                         '}';
         }
 

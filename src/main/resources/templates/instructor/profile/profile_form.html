@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:include="fragments/head :: head">
-    <title id="pageTitle">강사수정</title>
+    <title id="pageTitle">수강생 등록</title>
 </head>
 <body>
-    <div th:insert="~{admin/nav/nav :: menu}"></div>
+    <div th:insert="~{instructor/nav/nav :: menu}"></div>
     <div class="container" th:object="${instructorResponseDto}">
         <h4>강사수정</h4>
-        <form th:action="@{/admin/instructors/__${instructorResponseDto.id}__/edit}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/instructor/profile/edit}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="instructor_nick_name"> 프로필 닉네임 </label>
                 <input type="text" id="instructor_nick_name" class="form-control" name="nickName" th:value="*{nickName}">
@@ -27,10 +27,6 @@
             <div class="form-group">
                 <label for="instructor_profile_info"> 프로필 정보 </label>
                 <textarea id="instructor_profile_info" class="form-control" style="resize: none;" rows="3" name="profileInfo" th:text="*{profileInfo}"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="instructor_username"> 계정 ID </label>
-                <input type="text" id="instructor_username" class="form-control" name="username" readonly th:value="*{username}">
             </div>
 
             <hr>

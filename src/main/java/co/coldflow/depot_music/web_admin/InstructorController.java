@@ -46,20 +46,8 @@ public class InstructorController {
 
     @PostMapping("/admin/instructors")
     public String postInstructor(InstructorRequestDto instructorRequestDto) throws IOException {
-        MultipartFile file = instructorRequestDto.getPortrait();
 
-        Path targetPath = null;
-        String directoryPath = "portrait";
-        Path directory = Paths.get(directoryPath).toAbsolutePath().normalize();
-        Files.createDirectories(directory);
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        Assert.state(!fileName.contains(".."), "Name of file cannot contain '..'");
-        targetPath = directory.resolve(fileName).normalize();
-        if(!fileName.isEmpty()){
-            file.transferTo(targetPath);
-        }
-
-        Long id = instructorService.insertInstructor(instructorRequestDto, targetPath);
+        Long id = instructorService.insertInstructor(instructorRequestDto);
 
         return "redirect:/admin/instructors/"+id;
     }

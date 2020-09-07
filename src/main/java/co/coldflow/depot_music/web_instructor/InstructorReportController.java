@@ -72,5 +72,4 @@ public class InstructorReportController {
         reportService.updateReportRequest(id, reportRequestDto);
         return "redirect:/instructor/reports/" + id;
     }
-
 }

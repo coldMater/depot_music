@@ -1,20 +1,34 @@
 package co.coldflow.depot_music.service;
 
+import co.coldflow.depot_music.dto.StudentResponseDto;
 import co.coldflow.depot_music.entity.Account;
 import co.coldflow.depot_music.entity.EUserRole;
 import co.coldflow.depot_music.entity.Instructor;
 import co.coldflow.depot_music.entity.Student;
+import co.coldflow.depot_music.repository.AccountRepository;
 import co.coldflow.depot_music.repository.InstructorRepository;
 import co.coldflow.depot_music.repository.StudentRepository;
 import co.coldflow.depot_music.dto.InstructorRequestDto;
 import co.coldflow.depot_music.dto.InstructorResponseDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import java.nio.file.Path;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -22,14 +36,16 @@ public class InstructorService {
     private final InstructorRepository instructorRepository;
     private final StudentRepository studentRepository;
     private final AccountService accountService;
+    private final AccountRepository accountRepository;
 
-    public InstructorService(InstructorRepository instructorRepository, StudentRepository studentRepository, AccountService accountService) {
+    public InstructorService(InstructorRepository instructorRepository, StudentRepository studentRepository, AccountService accountService, AccountRepository accountRepository) {
         this.instructorRepository = instructorRepository;
         this.studentRepository = studentRepository;
         this.accountService = accountService;
+        this.accountRepository = accountRepository;
     }
 
-    public Long insertInstructor(InstructorRequestDto instructorRequestDto, Path filePath) {
+    public Long insertInstructor(InstructorRequestDto instructorRequestDto) {
         Account account = accountService.createAccount(instructorRequestDto.getUsername(), instructorRequestDto.getPassword(), EUserRole.ROLE_INSTRUCTOR);
 
         Instructor instructorToBeSaved = new Instructor();
@@ -40,9 +56,6 @@ public class InstructorService {
         instructorToBeSaved.setTel(instructorRequestDto.getTel());
         instructorToBeSaved.setMemo(instructorRequestDto.getMemo());
         instructorToBeSaved.setProfileInfo(instructorRequestDto.getProfileInfo());
-        instructorToBeSaved.setFileName(instructorRequestDto.getPortrait() != null ? instructorRequestDto.getPortrait().getOriginalFilename():"");
-        instructorToBeSaved.setFilePath(instructorRequestDto.getPortrait() != null ? filePath.toString(): "");
-
 
         Instructor instructorSaved = instructorRepository.save(instructorToBeSaved);
 
@@ -107,5 +120,80 @@ public class InstructorService {
                 .orElseThrow(()-> new IllegalArgumentException("해당 ID 를 가진 수강생이 존재하지 않습니다. id="+studentId));
 
         instructor.getStudents().remove(student);
+    }
+
+    public InstructorResponseDto selectInstructorsProfile() {
+        Instructor instructor = getInstructorFromContext();
+        return new InstructorResponseDto(instructor);
+    }
+
+    private Instructor getInstructorFromContext() {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Account account = accountRepository.findByUsername(principal.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("접속한 사용자의 정보가 없습니다."));
+
+        return instructorRepository.findByAccount(account)
+                .orElseThrow(() -> new IllegalArgumentException("접속한 사용자는 강사 정보를 가지고 있지 않습니다."));
+    }
+
+    public void updateInstructorsProfile(InstructorRequestDto instructorRequestDto) {
+        Instructor instructor = getInstructorFromContext();
+
+        instructor.setNickName(instructorRequestDto.getNickName());
+        instructor.setRealName(instructorRequestDto.getRealName());
+        instructor.setTel(instructorRequestDto.getTel());
+        instructor.setMemo(instructorRequestDto.getMemo());
+        instructor.setProfileInfo(instructorRequestDto.getProfileInfo());
+    }
+
+    public void changePortrait(MultipartFile portraitFile) throws IOException {
+        //TODO 기존 파일정보는 지우기
+        String fileNameToBeSaved = getFilenameAsUUID(portraitFile);
+        Path targetPath = saveFile(portraitFile, fileNameToBeSaved);
+
+        Instructor instructor = getInstructorFromContext();
+
+        instructor.setFileName(fileNameToBeSaved);
+        instructor.setFilePath(targetPath.toString());
+    }
+
+    public void changeInstructorsPortrait(MultipartFile portraitFile, long instructorId) {
+        //TODO 기존 파일정보는 지우기
+        String fileNameToBeSaved = getFilenameAsUUID(portraitFile);
+        Path targetPath = saveFile(portraitFile, fileNameToBeSaved);
+
+        Instructor instructor = instructorRepository.findById(instructorId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT, "요청하신 강사 정보가 존재하지 않습니다. id="+instructorId));
+
+        instructor.setFileName(fileNameToBeSaved);
+        instructor.setFilePath(targetPath.toString());
+    }
+
+    private String getFilenameAsUUID (MultipartFile portraitFile) {
+        String fileName = StringUtils.cleanPath(portraitFile.getOriginalFilename());
+        int pos = fileName.lastIndexOf('.');
+        String extension = fileName.substring(pos + 1);
+        String fileNameToBeSaved = UUID.randomUUID() + "." + extension;
+
+        return fileNameToBeSaved;
+    }
+
+    private Path saveFile(MultipartFile file, String fileNameToBeSaved){
+        try {
+            Path targetPath = null;
+            String directoryPath = "portrait";
+            Path directory = Paths.get(directoryPath).toAbsolutePath().normalize();
+            Files.createDirectories(directory);
+
+            Assert.state(!fileNameToBeSaved.contains(".."), "Name of file cannot contain '..'");
+            targetPath = directory.resolve(fileNameToBeSaved).normalize();
+            if (!fileNameToBeSaved.isEmpty()) {
+                file.transferTo(targetPath);
+            }
+            return targetPath;
+        } catch (Exception e) {
+            new ResponseStatusException(HttpStatus.BAD_REQUEST, "파일 형식이 유효하지 않습니다.");
+        }
+        return null;
     }
 }
