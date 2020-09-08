@@ -21,6 +21,10 @@ public class Student extends BaseEntity {
     @JoinColumn(name="parent")
     private Parent parent;
 
+    @OneToOne
+    @JoinColumn(name="account_id", nullable = false)
+    private Account account;
+
     public String getName() {
         return name;
     }
@@ -75,5 +79,13 @@ public class Student extends BaseEntity {
 
     public void setParent(Parent parent) {
         this.parent = parent;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

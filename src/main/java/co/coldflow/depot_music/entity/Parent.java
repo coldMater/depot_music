@@ -2,12 +2,14 @@ package co.coldflow.depot_music.entity;
 
 import co.coldflow.depot_music.entity.Base.BaseEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
 public class Parent extends BaseEntity {
+    @Column(unique = true)
     private String name;
     private String tel;
 

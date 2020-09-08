@@ -31,6 +31,7 @@ public class StudentService {
 
         Student student = new Student();
 
+        student.setAccount(account);
         student.setAddress(studentRequestDto.getAddress());
         student.setBirthDate(studentRequestDto.getBirthDate());
         student.setEmail(studentRequestDto.getEmail());

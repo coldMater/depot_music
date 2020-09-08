@@ -10,6 +10,8 @@ public class CommentResponseDto {
     private String content;
     private String createdDate;
     private String createdTime;
+    private long authorId;
+    private String username;
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
@@ -17,6 +19,8 @@ public class CommentResponseDto {
         this.content = comment.getContent();
         this.createdDate = comment.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.createdTime = comment.getCreatedDate().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        this.authorId = comment.getCreatedBy();
+        this.username = comment.getUsername();
     }
 
     public long getId() {
@@ -37,5 +41,13 @@ public class CommentResponseDto {
 
     public String getCreatedTime() {
         return createdTime;
+    }
+
+    public long getAuthorId() {
+        return authorId;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
     @GetMapping("/")
     public String getMainPage(Model model) {
-                                         return "main/main";
-        }
+         return "main/main";
+    }
 }

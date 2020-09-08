@@ -88,9 +88,9 @@ public class DepotRunner implements ApplicationRunner{
 
             long studentId = studentService.insertStudent(
                     new StudentRequestDto(
-                        randomHangulName(),
+                        i==0?"수강생":randomHangulName(),
                         LocalDate.now().minusYears(15).minusDays(Math.round(Math.random()*365)),
-                        "010-0000-000"+i%10,
+                        i==0?"1234":"010-0000-000"+i%10,
                         "email"+i+"@depot.com",
                         "주소 광주 어딘가 섬웨어 "+i,
                         type,
@@ -112,7 +112,9 @@ public class DepotRunner implements ApplicationRunner{
             if(studentList.size() != 0){
                 report.setStudent(studentList.get((int)Math.round(Math.floor(Math.random()*studentList.size()))));
             }
-            report.setProgram("test_"+i);
+            report.setProgram("test_Prog"+i);
+            report.setSubject("test_Subject"+i);
+            report.setResult("test_Result"+i);
 
             for(long j = 0L; j<2L; j++){
                 Comment comment = new Comment();

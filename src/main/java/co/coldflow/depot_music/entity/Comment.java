@@ -13,6 +13,8 @@ public class Comment extends BaseEntity {
     @Lob
     private String content;
 
+    private String username;
+
     @ManyToOne
     @JoinColumn(name="report_id")
     private Report report;
@@ -41,4 +43,11 @@ public class Comment extends BaseEntity {
         this.report = report;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

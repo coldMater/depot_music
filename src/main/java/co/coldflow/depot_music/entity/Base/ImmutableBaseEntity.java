@@ -15,6 +15,7 @@ public abstract class ImmutableBaseEntity {
     private long id;
 
     @CreatedBy
+    @Column(nullable = true)
     private long createdBy;
 
     @CreatedDate

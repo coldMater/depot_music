@@ -12,4 +12,6 @@ import java.util.List;
 public interface ReportRepository extends JpaRepository<Report, Long> {
     Page<Report> findAllByOrderByIdDesc(Pageable pageable);
     Page<Report> findAllByInstructorOrderByIdDesc(Instructor instructor, Pageable pageable);
+
+    Page<Report> findAllByStudentOrderByIdDesc(Student student, Pageable pageable);
 }

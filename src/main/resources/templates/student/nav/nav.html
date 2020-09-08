@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <body>
+        <div th:fragment="menu">
+            <nav th:fragment="menu" class="navbar navbar-expand-lg navbar-dark bg-dark shadow mb-3">
+                <a class="navbar-brand" th:href="@{/student}"><i class="fas fa-guitar"></i> Cellar Music</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/student/reports}">수강일지</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/student/profile}">선생님 프로필</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/student/information}">원장님 정보 연결</a>
+                        </li>
+                    </ul>
+                    <div class="ml-auto">
+                        <div sec:authorize="isAuthenticated()">
+                            <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+                                <button class="btn btn-sm btn-outline-light my-2 my-sm-0" type="submit">로그아웃</button>
+                            </form>
+                        </div>
+                        <div sec:authorize="!isAuthenticated()">
+                            <form class="form-inline my-2 my-lg-0" th:action="@{/login}" method="get">
+                                <button class="btn btn-sm btn-outline-light my-2 my-sm-0" type="submit">로그인</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <script>
+                const navLinkList = document.getElementsByClassName("nav-link");
+
+                function init() {
+                    const presentPathName = getSecondPathname(window.location.pathname);
+                    for(let item of navLinkList){
+                        const navPathname = getSecondPathname(new URL(item.href).pathname);
+                        if(presentPathName === navPathname){
+                            item.parentElement.classList.add("active");
+                        } else {
+                            item.parentElement.classList.remove("active");
+                        }
+                    }
+                }
+
+                function getSecondPathname(pathname){
+                    return pathname.split('/')[2];
+                }
+
+                init();
+            </script>
+        </div>
+    </body>
+</html>

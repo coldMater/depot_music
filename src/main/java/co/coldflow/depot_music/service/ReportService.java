@@ -52,6 +52,31 @@ public class ReportService {
         return new ReportListResponseWithPageInfoDto(reportPage.getTotalPages(), reportPage.getPageable(), reportListToBeReturned);
     }
 
+    public ReportListResponseWithPageInfoDto selectStudentsReportList(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1 , size);
+
+        Student student = findStudentFromContext();
+
+        Page<Report> reportPage = reportRepository.findAllByStudentOrderByIdDesc(student, pageable);
+
+        List<ReportResponseDto> reportListToBeReturned = new ArrayList<>();
+
+        for(Report report: reportPage){
+            reportListToBeReturned.add(new ReportResponseDto(report));
+        }
+
+        return new ReportListResponseWithPageInfoDto(reportPage.getTotalPages(), reportPage.getPageable(), reportListToBeReturned);
+    }
+
+    private Student findStudentFromContext() {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Account account = accountRepository.findByUsername(principal.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("접속한 사용자의 정보가 없습니다."));
+
+        return studentRepository.findByAccount(account)
+                .orElseThrow(() -> new IllegalArgumentException("접속한 사용자는 강사 정보를 가지고 있지 않습니다."));
+    }
+
     public ReportResponseDto selectReport(long id) {
         Report report = reportRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("요청하신 ID의 수강일지가 존재하지 않습니다. id="+id));
@@ -135,6 +160,18 @@ public class ReportService {
         return report.getId();
     }
 
+    public ReportResponseDto selectReportFromStudent(long id) {
+        Student student = findStudentFromContext();
+
+        Report report = reportRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("요청하신 ID의 수강일지가 존재하지 않습니다. id="+id));
+
+        if (!(report.getStudent().getId()==student.getId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "요청한 계정의 수강일지가 아닙니다.");
+        }
+
+        return new ReportResponseDto(report);
+    }
 
 //    public Long insertReport(ReportRequestDto studentRequestDto){
 //        Report student = new Report();
