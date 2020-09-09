@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
 public abstract class MutableBaseEntity extends ImmutableBaseEntity {
     @LastModifiedBy
     @Column(nullable = true)
-    private long modifiedBy;
+    private String modifiedBy;
 
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
-    public long getModifiedBy() {
+    public String getModifiedBy() {
         return modifiedBy;
     }
 

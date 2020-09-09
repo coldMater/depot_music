@@ -16,7 +16,7 @@ public abstract class ImmutableBaseEntity {
 
     @CreatedBy
     @Column(nullable = true)
-    private long createdBy;
+    private String createdBy;
 
     @CreatedDate
     private LocalDateTime createdDate;
@@ -25,7 +25,7 @@ public abstract class ImmutableBaseEntity {
         return id;
     }
 
-    public long getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 

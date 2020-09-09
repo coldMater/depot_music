@@ -11,12 +11,12 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Optional;
 
-public class SpringSecurityAuditAwareImpl implements AuditorAware<Long> {
+public class SpringSecurityAuditAwareImpl implements AuditorAware<String> {
     @Autowired
     AccountRepository accountRepository;
 
     @Override
-    public Optional<Long> getCurrentAuditor() {
+    public Optional<String> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(authentication == null){
@@ -29,8 +29,6 @@ public class SpringSecurityAuditAwareImpl implements AuditorAware<Long> {
 
         User userPrincipal = (User)authentication.getPrincipal();
         String authorUsername = userPrincipal.getUsername();
-        Account account = accountRepository.findByUsername(authorUsername)
-                .orElseThrow(() -> new IllegalArgumentException("접속한 사용자의 정보가 없습니다."));
-        return Optional.ofNullable(account.getId());
+        return Optional.ofNullable(authorUsername);
     }
 }

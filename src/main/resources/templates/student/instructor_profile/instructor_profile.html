@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="fragments/head :: head">
+    <title id="pageTitle">강사 프로필</title>
+</head>
+<style>
+    .image_portrait {
+        background-position: center;
+        background-size: cover;
+        width: 122px;
+        height: 122px;
+        border-radius: 50%;
+        border: 5px solid silver;
+    }
+</style>
+<body>
+    <div th:insert="~{student/nav/nav :: menu}"></div>
+    <div class="container">
+        <h4>강사 프로필</h4>
+
+        <div th:each="instructor: ${instructorResponseDtoList}">
+            <div th:text="*{instructor.nickName}">
+
+            </div>
+            <div th:text="*{instructor.realName}">
+            </div>
+            <div class="form-group">
+                <label> 프로필 이미지 </label>
+                <div class="d-flex justify-content-center" style="position: relative;">
+                    <div
+                            class="image_portrait"
+                            th:style="'background-image: url(\'/portrait/'+*{instructor.id}+'\'), url(\'/images/clef.png\')'">
+                    </div>
+                </div>
+            </div>
+            <div th:text="*{instructor.profileInfo}">
+
+            </div>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            Roles: <span sec:authentication="principal.authorities"></span>
+            Logged user: <span sec:authentication="name"></span>
+        </div>
+    </div>
+</body>
+</html>

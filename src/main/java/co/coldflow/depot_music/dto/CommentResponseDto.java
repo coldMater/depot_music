@@ -10,7 +10,7 @@ public class CommentResponseDto {
     private String content;
     private String createdDate;
     private String createdTime;
-    private long authorId;
+    private String authorId;
     private String username;
 
     public CommentResponseDto(Comment comment) {
@@ -43,7 +43,7 @@ public class CommentResponseDto {
         return createdTime;
     }
 
-    public long getAuthorId() {
+    public String getAuthorId() {
         return authorId;
     }
 
