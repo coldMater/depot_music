@@ -196,4 +196,20 @@ public class InstructorService {
         }
         return null;
     }
+
+    public List<InstructorResponseDto> selectInstructorsProfileOfStudent() {
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Account account = accountRepository.findByUsername(principal.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("접속한 사용자의 정보가 없습니다."));
+
+        Student student = studentRepository.findByAccount(account)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT, "요청하신 사용자의 정보가 없습니다."));
+
+        List<InstructorResponseDto> instructors = new ArrayList<>();
+        for(Instructor instructor: student.getInstructors()){
+            instructors.add(new InstructorResponseDto(instructor));
+        }
+
+        return instructors;
+    }
 }

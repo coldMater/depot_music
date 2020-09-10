@@ -29,6 +29,7 @@ public class StudentReportController implements WebMvcConfigurer {
 
         model.addAttribute("reports", reports);
         model.addAttribute("pagination", pagination);
+
         return "student/report/reports";
     }
 

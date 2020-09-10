@@ -7,19 +7,34 @@
 </style>
 <body>
     <div th:insert="~{student/nav/nav :: menu}"></div>
-    <div class="container">
-        <h4>기관 정보</h4>
-
-        <div th:object="${basicInformationResponseDto}">
-            <div th:text="*{title}">
-
+    <div class="container" th:object="${basicInformationResponseDto}">
+        <h4>기본 정보</h4>
+        <form>
+            <div class="form-group">
+                <label for="title">학원명</label>
+                <input type="text" id="title" class="form-control " name="title" readonly th:value="*{title}">
             </div>
-        </div>
-
-        <div sec:authorize="isAuthenticated()">
-            Roles: <span sec:authentication="principal.authorities"></span>
-            Logged user: <span sec:authentication="name"></span>
-        </div>
+            <div class="form-group">
+                <label for="tel"> 학원전화번호 </label>
+                <input type="tel" id="tel" class="form-control" name="tel" readonly th:value="*{tel}">
+            </div>
+            <div class="form-group">
+                <label for="address"> 주소 </label>
+                <input type="text" id="address" class="form-control" name="address" readonly th:value="*{address}">
+            </div>
+            <div class="form-group">
+                <label for="email"> 이메일 </label>
+                <input type="email" id="email" class="form-control" name="email" readonly th:value="*{email}">
+            </div>
+            <div class="form-group">
+                <label for="chiefName"> 대표자명 </label>
+                <input type="text" id="chiefName" class="form-control" name="chiefName" readonly th:value="*{chiefName}">
+            </div>
+            <div class="form-group">
+                <label for="chiefTel"> 대표자전화 </label>
+                <input type="tel" id="chiefTel" class="form-control" name="chiefTel" readonly th:value="*{chiefTel}">
+            </div>
+        </form>
     </div>
 </body>
 </html>

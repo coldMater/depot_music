@@ -4,6 +4,8 @@ import co.coldflow.depot_music.entity.Base.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Student extends BaseEntity {
@@ -24,6 +26,9 @@ public class Student extends BaseEntity {
     @OneToOne
     @JoinColumn(name="account_id", nullable = false)
     private Account account;
+
+    @ManyToMany(mappedBy = "students")
+    private List<Instructor> instructors  = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -87,5 +92,9 @@ public class Student extends BaseEntity {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public List<Instructor> getInstructors() {
+        return instructors;
     }
 }
